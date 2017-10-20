@@ -1,48 +1,132 @@
-\documentclass[10pt,letterpaper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
+\documentclass[thesis,tocnosub,noragright,centerchapter,12pt,fullpage]{uiucecethesis09}
+
+% Use draftthesis for notes and date markings on every page.  Useful when you
+%   have multiple copies floating around.
+% Use offcenter for the extra .5 inch on the left side. Needed with fullpage and fancy.
+% Use mixcasechap for compatibility with hyperref package, which does NOT like all caps default
+% Use edeposit for the adviser/committee on the title page.
+% Use tocnosub to suppress subsection and lower entries in the TOC.
+% PhD candidates use "proquest" for the proquest abstract.
+
+\makeatletter
+
+%%%%%%%%%%%%%%%
+% MK Added to make bib work
+\bstctlcite{IEEEexample:BSTcontrol}
+
+% MK added to highlight stuff
+\usepackage{color,soul}
+
+% MK added so figures can use the [H] option and be put where I want them.
+\usepackage{float}
+
+% MK added so algorithms work
+\usepackage{algorithm}
+
+%%%%%%%%%%%%%%%
+
+\setcounter{secnumdepth}{5} % to make subsubsections work
+\usepackage{setspace}
+\usepackage{epsfig}  % for figures
+\usepackage{graphicx}  % another package that works for figures
+\usepackage{subfigure}  % for subfigures
+\usepackage{amsmath}  % for math spacing
+\usepackage{amssymb}  % for math spacing
+%\usepackage{url}  % Hyphenation of URLs.
+\usepackage{lscape}  % Useful for wide tables or figures.
+\usepackage[justification=raggedright]{caption}	% makes captions ragged right - thanks to Bryce Lobdell
+
+
+\DeclareMathOperator*{\argminA}{arg\,min} % Jan Hlavacek
+
+% Uncomment the appropriate one of the following four lines:
+\phdthesis
+%\phdthesis
+%\otherdoctorate[abbrev]{Title of Degree}
+%\othermasters[abbrev]{Title of Degree}
+
+\title{Automated Isotope Identification Algorithm Using Artificial Neural Networks}
+\author{Mark Kamuda}
+\department{Nuclear Plasma and Radiological Engineering}
+%\department{\mbox{Nuclear, Plasma, and Radiological Engineering}}
+\degreeyear{2017}
+
+% Advisor name is required for
+% - doctoral students for the ProQuest abstract
+% - master's students who do not have a master's committee
+% \advisor{Assistant Professor Clair J. Sullivan}
+
+% Uncomment the \committee command for
+% - all doctoral students
+% - master's students who have a master's committee
+\committee{Assistant Professor Kathryn Huff, Adviser\\
+        Prof_1\\
+        Prof_2\\
+        Prof_3}
+
+
+
+
 
 \begin{document}
 
-\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COPYRIGHT
+%
+%\copyrightpage
+%\blankpage
 
-
-\title{Dissertation Proposal Draft}
-\author{Mark Kamuda}
-\date{October 2017}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE
+%
 \maketitle
 
+%\raggedright
+\parindent 1em%
 
-\section{Introduction}
+\frontmatter
 
-The aim of this dissertation is to demonstrate the performance of artificial neural networks (ANNs) for various tasks related to identifying and quantifying the radioisotopes in low-resolution gamma-ray spectra. The low-resolution detector of interest in this work is a 2 inch by 2 inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of production, low cost, and acceptable resolution. Tasks of interest include unknown threat source search in a city, plutonium and uranium enrichment measurements, and fission product analysis for post-detonation nuclear explosive debris. 
+\tableofcontents
+
+\listoftables
+
+\listoffigures
+
+\mainmatter
+
+
+\chapter{Introduction}
+
+The aim of this dissertation is to demonstrate the performance of artificial neural networks (ANNs) for various tasks related to identifying and quantifying the radioisotopes in low-resolution gamma-ray spectra. The low-resolution detector of interest in this work is a 2-inch by 2-inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of production, low cost, and acceptable resolution. Tasks of interest include unknown threat source search in a city, plutonium and uranium enrichment measurements, and fission product analysis for post-detonation nuclear explosive debris. 
 
 An ANN will learn to perform these tasks by learning from simulated datasets that represent these tasks. The aim of this work is to demonstrate that an ANN can be taught to perform different isotope identification tasks using a simulated dataset using the same general training method.
 
 
-\section{Literature Review}
+\chapter{Literature Review}
 
 
-\subsection{Scintillation Detector Physics}
+\section{Scintillation Detector Physics}
 
 Should I extend to general gamma-ray detector physics? how thorough should this section be?
 
 
-\subsection{Isotope Identification}
-
-\subsection{Isotope Identification Using ANNs}
+\section{Isotope Identification}
 
 
 
 
-\subsection{Identification Tasks}
+\section{Isotope Identification Using ANNs}
 
-\subsubsection{Source Search in a City}
+
+
+
+\section{Identification Tasks}
+
+\subsection{Source Search in a City}
 An unknown source search in a city is a difficult problem. The background radiation in a city fluctuates due to proximity to naturally radioactive structures (marble statues, concrete buildings) and the weather (rain increases background radiation through leeching radioactive gases from the soil as well as washing radioactive particles out of the upper atmosphere). An identification algorithm will need to be able to discriminate between these naturally occurring increases in radioactivity with true threat sources. Additionally, measurement time may be limited in the field. For example, a police officer may only have a minute to measure an area or object, and will expect a quick response from the identification instrument. To further complicate this task, NaI(Tl) spectrometers are prone to gain drift. Gain drift can occur naturally over time and when the device changes temperature. While gain drift can be corrected through frequently re-calibrating the detector, the user may not re-calibrate as often or as precisely as they should for optimum performance. This scenario requires an algorithm that can quickly and accurately identify a large number of threat isotopes in a spectrum with an unknown background, low signal-to-noise ratio (due to potential distance from source to detector), a large variance in the measured data (due to the short measurement time), and an unreliable calibration (due to user error).
 
-\subsubsection{Plutonium and Uranium Enrichment Measurements}
+\subsection{Plutonium and Uranium Enrichment Measurements}
+
 
 Plutonium and uranium enrichment measurements are incredibly important for nuclear security applications. Currently, these types of analyses depend on high-resolution devices such as high-purity germanium (HPGe) semiconductor detectors. While the resolution of these detectors (0.1\%) is much better than NaI(Tl) (5-6\%).
 
@@ -66,12 +150,12 @@ We're trying to apply a neural network to identify the isotopes in freshly enric
 
 
 
-\subsubsection{Post-Detonation Debris Analysis}
+\subsection{Post-Detonation Debris Analysis}
 
 
-\section{Previous Work}
+\chapter{Previous Work}
 
-\subsection{Published Work}
+\section{Published Work}
 
 The work I published has a lot of room for improvement. Some physics in the MCNP model were neglected, like any radiation contribution from bremsstrahlung and environmental scatter. Also the background isotope spectra were very wrong. These were generated assuming a point source of radiation. Real background is distributed in the soil. Many scattering events in soil along with skyshine contribute to a spectrum that looks very different from a point source (cite MCNP background simulation paper). 
 
@@ -79,11 +163,11 @@ There were parts of the published work that were good. The sampling method based
 
 Moving away from the MCNP model, we used GADRAS to create our template spectra. GADRAS has done all the physics heavy lifting for us, which is awesome. Also lets us simulate shielding, different scattering environments, detectors with different parameters(FWHM, gain, crystal dimensions (!)), and entirely different detectors. We have demonstrated that an ANN trained with this data can accurately identify poor quality simulated spectra. Real spectra are still needed (And likely will be included in the results section).
 
-\subsection{Fa17 Work on three datasets}
+\section{Fa17 Work on three datasets}
 
 Might just be shielding. This is a complicated problem. 
 
-\subsubsection{Current Proposed Method}
+\subsection{Current Proposed Method}
 
 
 The current method begins by simulating a gamma-ray spectrum dataset for a given identification and quantification task. The ANN inputs are 1024 channels of a NaI spectrum and the output is percent count contributions from each isotope in the library used. The number of input channels can be easily changed to accommodate other detectors. 
@@ -116,7 +200,7 @@ The current method begins by simulating a gamma-ray spectrum dataset for a given
 
 
 
-\section{Future Work}
+\chapter{Future Work and Proposed Experiments}
 
 Work for this dissertation will fall into two main categories. The first will be determining how to construct the training and testing data sets. For each dataset, the specific isotopes and priors on the isotopes in each spectrum need to be determined.  The second category will be analyzing how well the ANN learned the specific task. 
 
@@ -124,40 +208,227 @@ Giant part of future work will be collecting validation data, quantifying the li
 
 I need a more rigorous early stopping criteria. Need to look into that. Right now it works and has some justification, but it's not as pretty as I want it to be. May need to consult an expert in ECE or something.
 
-\subsection{Real Dataset Validation}
 
-\subsubsection{Source Search in a City Real Spectra Dataset}
+\section{Introduction}
+
+The aim of this experiment is to investigate how well an ANN can distinguish between shielded and unshielded isotopes. Traditionally this problem is difficult because shielding non-linearly attenuated gamma-rays, changing the shape of a spectrum. In some cases with enough shielding low-energy gamma-rays can be completely attenuated, removing information from a spectrum. 
+
+Previous work using an ANN for isotope identification have been very promising.
+
+
+\section{ANN Dataset with Shielding Proposed Experiment Outline}
+
+The aim of this experiment is to investigate how well an ANN can distinguish between shielded and unshielded isotopes. This problem is difficult because shielding exponentially attenuates gamma-rays with respect to energy, changing the shape of a spectrum. In some cases with enough shielding low-energy gamma-rays can be completely attenuated, removing information from a spectrum. 
+
+Because threat sources will likely be hidden by shielding, it is important to be able to identify shielded isotopes. Peak based methods may perform poorly when identifying shielded isotopes because the signal from the isotope is reduced, which makes peak-identification more difficult. In addition, shielding may eliminate low-energy photons from a spectrum, requiring the algorithm to identify an isotope from only it's higher energy components. Template matching algorithms may also have trouble here. A very large template library would be necessary to account for different thicknesses and types of shielding material. A larger template library increases an algorithm's search time and storage requirements for hand held devices.  
+
+Neural networks avoid the issues presented by other identification algorithms. 
+
+Previous work using an ANN for isotope identification have been very promising.
+
+\subsection{Dataset construction}
+
+In this initial study the dataset will be constructed similarly to previous datasets. There will be a total of 10$^{4}$ spectra in the training dataset, 10$^{3}$ spectra in the testing dataset, and 10$^{3}$ spectra in the validation dataset. Each spectrum will be composed of only background or  a single isotope and a background contribution. The background contribution will come from uranium daughters, thorium daughters, and potassium. The background components will be chosen based on a Gaussian distribution with a mean corresponding to expected Illinois background. The variance of this distribution is TBD. The Illinois mean is chosen because we plan on collecting real spectra in Talbot to test our results. The background count rate will be sampled based on a Gaussian distribution using a typical background mean count rate of 65 cps. The variance of this distribution is TBD. 
+
+Each spectrum will be composed of either a single isotope or only background. A uniform prior on each isotope (including background) will be used to construct this. Each isotope will be sampled using a degree of shielding ranging from 0cm to 5cm of steel in 0.5cm increments. The dataset will be constructed in the same way as past datasets, sampling on a count-rate basis.
+
+Priors on the count rates for each shielding scenario are important here. Neural networks may be somewhat sensitive to priors in the training set, and the priors should reflect expected use cases. For example, if we  are developing an ANN to identify multi-Curie sources behind shielding we may not include unshielded $\mu$Ci sources in the training set.
+
+In this experiment we will attempt to use an ANN to identify various check sources behind varying amounts of shielding. Initially we will only look at single sources. Each source is between 0.1 and 10 $\mu$Ci. The sources will be measured between 6 inches and 2 feet from the detector. Beyond 2 feet the count rate may be minimal. The equation for radiation attenuation is shown in Equation \ref{attenuation_equation}, where \mu$_{material}$ is the  total attenuation coefficient for a mono-energetic gamma-ray. 
+
+Assuming a 1 $\mu$Ci source at a distance of 1m from a NaI detector (3\% absolute efficiency)  
+
+\begin{equation} \label{attenuation_equation}
+I(x_{shield}) = I_o \exp^{-x_{shield}*\mu_{material}}
+\end{equation}
+
+\begin{equation} \label{geometric_eff}
+I(d,r) = \frac{\pi r^2}{4 \pi d^2}
+\end{equation}
+
+\begin{equation} \label{total_eff}
+I(x_{shield},d,r) = \frac{\pi r^2 \exp^{-x_{shield}*\mu_{material}} }{4 \pi d^2}
+\end{equation}
+
+
+
+
+If the results for shielded single source identification are good, this will be expanded to a multi-source case. For the priors, one choice is to use uniform priors for the count rates of each shielding case. This may be a poor choice, as it effectively trains the network to expect 
+
+\subsection{GADRAS Input Files}
+
+More of a quick note. GADRAS input files are formatted like: "Source,activity{atomic number of shielding,area density}". So for example \verb!232U,10uC{26,10}! is a 10$\mu$Ci $^{232}$U source behind 10 g/cm$^{2}$ of iron (Z=26).  Solid iron has a density of 7.87 g/cm$^{3}$. A solid iron wall with area density of 10 g/cm$^{2}$ corresponds to a wall of thickness of 1.271 cm, or approximately 0.5 inches (seen in Table \ref{Irontable}).
+
+
+\begin{table}[]
+\centering
+\caption{Thickness of iron and corresponding areal density for GADRAS inputs. Solid iron has a density of 7.87 g/cm$^{3}$.}
+\label{Irontable}
+\begin{tabular}{|c|c|}
+\hline
+Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
+0.5 & 10 \\ \hline
+1.0 & 20 \\ \hline
+\multicolumn{2}{c}{\vdots} \\ \hline
+4.5 & 90 \\ \hline
+5.0 & 100 \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Thickness of lead and corresponding areal density for GADRAS inputs. Solid lead has a density of 11.34 g/cm$^{3}$.}
+\label{my-label}
+\begin{tabular}{|c|c|}
+\hline
+Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
+0.5 & 5.67 \\ \hline
+1.0 & 11.3 \\ \hline
+\multicolumn{2}{c}{\vdots} \\ \hline
+4.5 & 51.0 \\ \hline
+5.0 & 56.7 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Results and Discussion}
+
+Results will include a confusion matrix for each shielding scenario. There will be a confusion matrix for 0cm of steel, 0.5cm steel, ... , 5cm steel. This will inform us on what the ANN is confusing with what. The confusion matrix will be composed of 100 samples of each isotope. This will take a while to run.
+
+This may also be a good time to try the true-positive/false-positive confusion matrix idea for mixtures. This may line up well with the single isotope confusion matrix.
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Dataset construction}
+
+In this initial study the dataset will be constructed similarly to previous datasets. There will be a total of 10$^{4}$ spectra in the training dataset, 10$^{3}$ spectra in the testing dataset, and 10$^{3}$ spectra in the validation dataset. Each spectrum will be composed of only background or  a single isotope and a background contribution. The background contribution will come from uranium daughters, thorium daughters, and potassium. The background components will be chosen based on a Gaussian distribution with a mean corresponding to expected Illinois background. The variance of this distribution is TBD. The Illinois mean is chosen because we plan on collecting real spectra in Talbot to test our results. The background count rate will be sampled based on a Gaussian distribution using a typical background mean count rate of 65 cps. The variance of this distribution is TBD. 
+
+Each spectrum will be composed of either a single isotope or only background. A uniform prior on each isotope (including background) will be used to construct this. Each isotope will be sampled using a degree of shielding ranging from 0cm to 5cm of steel in 0.5cm increments. The dataset will be constructed in the same way as past datasets, sampling on a count-rate basis.
+
+Priors on the count rates for each shielding scenario are important here. Neural networks may be somewhat sensitive to priors in the training set, and the priors should reflect expected use cases. For example, if we  are developing an ANN to identify multi-Curie sources behind shielding we may not include unshielded $\mu$Ci sources in the training set.
+
+In this experiment we will attempt to use an ANN to identify various check sources behind varying amounts of shielding. Initially we will only look at single sources. Each source is between 0.1 and 10 $\mu$Ci. The sources will be measured between 6 inches and 2 feet from the detector. Beyond 2 feet the count rate may be minimal. The equation for radiation attenuation is shown in Equation \ref{attenuation_equation}, where \mu$_{material}$ is the  total attenuation coefficient for a mono-energetic gamma-ray. 
+
+Assuming a 1 $\mu$Ci source at a distance of 1m from a NaI detector (3\% absolute efficiency)  
+
+\begin{equation} \label{attenuation_equation}
+I(x_{shield}) = I_o \exp^{-x_{shield}*\mu_{material}}
+\end{equation}
+
+\begin{equation} \label{geometric_eff}
+I(d,r) = \frac{\pi r^2}{4 \pi d^2}
+\end{equation}
+
+\begin{equation} \label{total_eff}
+I(x_{shield},d,r) = \frac{\pi r^2 \exp^{-x_{shield}*\mu_{material}} }{4 \pi d^2}
+\end{equation}
+
+
+
+
+If the results for shielded single source identification are good, this will be expanded to a multi-source case. For the priors, one choice is to use uniform priors for the count rates of each shielding case. This may be a poor choice, as it effectively trains the network to expect 
+
+% \section{GADRAS Input Files}
+
+% More of a quick note. GADRAS input files are formatted like: "Source,activity{atomic number of shielding,area density}". So for example \verb!232U,10uC{26,10}! is a 10$\mu$Ci $^{232}$U source behind 10 g/cm$^{2}$ of iron (Z=26).  Solid iron has a density of 7.87 g/cm$^{3}$. A solid iron wall with area density of 10 g/cm$^{2}$ corresponds to a wall of thickness of 1.271 cm, or approximately 0.5 inches (seen in Table \ref{Irontable}).
+
+
+\begin{table}[]
+\centering
+\caption{Thickness of iron and corresponding areal density for GADRAS inputs. Solid iron has a density of 7.87 g/cm$^{3}$.}
+\label{Irontable}
+\begin{tabular}{|c|c|}
+\hline
+Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
+0.5 & 10 \\ \hline
+1.0 & 20 \\ \hline
+\multicolumn{2}{c}{\vdots} \\ \hline
+4.5 & 90 \\ \hline
+5.0 & 100 \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Thickness of lead and corresponding areal density for GADRAS inputs. Solid lead has a density of 11.34 g/cm$^{3}$.}
+\label{my-label}
+\begin{tabular}{|c|c|}
+\hline
+Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
+0.5 & 5.67 \\ \hline
+1.0 & 11.3 \\ \hline
+\multicolumn{2}{c}{\vdots} \\ \hline
+4.5 & 51.0 \\ \hline
+5.0 & 56.7 \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Results and Discussion}
+
+Results will include a confusion matrix for each shielding scenario. There will be a confusion matrix for 0cm of steel, 0.5cm steel, ... , 5cm steel. This will inform us on what the ANN is confusing with what. The confusion matrix will be composed of 100 samples of each isotope. This will take a while to run.
+
+This may also be a good time to try the true-positive/false-positive confusion matrix idea for mixtures. This may line up well with the single isotope confusion matrix.
+
+
+
+\section{Real Spectra Dataset for Validation}
+
+\subsection{Source Search in a City Real Spectra Dataset}
 
 This dataset will be relatively easy to construct. Measure (in 209D) whatever button sources we have at various distances from detector (5cm, 10cm, 30cm, 50cm, 100cm, 500cm, 1m, 2m, 5m) (these distances ensure we get.
 
-\subsubsection{Plutonium and Uranium Enrichment Real Spectra Dataset}
+\subsection{Plutonium and Uranium Enrichment Real Spectra Dataset}
+
+For the uranium enrichment problem we have depleted uranium source blocks (from the dirt pile) we can readily collect gamma-ray spectra from. We also have gamma-ray spectra from a real HEU source, the Rocky Flats Shells 1-24. This gives us a source of low enriched and high enriched uranium spectra to compare how well the algorithm can distinguish these.  
+
+\subsection{Post-Detonation Debris Analysis Real Spectra Dataset}
+
+Because it is impossible to get fresh (on the order of minutes or hours old) post-detonation debris, a surrogate spectra dataset would be needed here. There are a few ways to get a surrogate dataset for this. To to the difficulty in acquiring these data, it may be more prudent to use a simulated dataset to analyze the performance for this task.
 
 
-
-\subsubsection{Post-Detonation Debris Analysis Real Spectra Dataset}
-
-
-\subsection{Extend the same ANN method to LaBr and CsI}
+\section{Extend the same ANN method to LaBr and CsI}
    
-    Extend the alg to CsI (D3S detectors) and LaBr. This would cause a stir in the field. Or at least get some interesting attention. 
+Extend the algorithm to CsI (D3S detectors) and LaBr. This would cause a stir in the field. Or at least get some interesting attention. 
 
-\subsection{Model Robustness Analysis}
+Once the datasets have been defined for NaI, using the ANN method outlined before, extending the algorithm to other detection materials should be trivial. The simulation software GADRAS can readily simulate parent spectra of other materials. Furthermore, the spectra sampling method is appropriate for other materials because it makes no assumptions .  
+
+\section{Model Robustness Analysis}
 
 I like my models like I like my coffee. Robust.
 
-The ANN training method seems to work all-right, but the evidence for this are anecdotal. There's a better way to prove what I'm doing isn't broken.
+The ANN training method seems to work okay, but the evidence for this are anecdotal. There's a better way to prove what I'm doing isn't broken.
+
+\subsection{Fooling the Model}
+
+    ANNs typically can be fooled by using adversarial examples. An adversarial example is  
+    Add increasing amounts of Gaussian noise to all channels, 
+
 
 % Things indented are things I \really\ want to do slash are things that I think would be hard to argue against 
 
-\subsubsection{Prove the 60 Samples Argument}
+\subsection{Prove the 60 Samples Argument}
 
-    Prove the 60 samples argument works for each dataset. IE Run 500 samples, show that from any 60 randomly chosen samples we get a final test error within x\% of the local optimum found in the 500 samples. Number of samples subject to change. Or do math to put confidence on this. This would be a \underline{GREAT} experiment.    
-
-\subsubsection{Analyze the Effect of Changing the Data Generating Distribution/Priors on ANN Performance}
-
-    Demonstrate that changing the detector parameters (effectively changing the data generating distribution slash priors) does not greatly change the ANNs performance. This can also be demonstrated by using our two NaI detectors for real spectra.
     
-\subsubsection{Analyze the Effect of Training Set Size on ANN Performance} 
+
+    Prove the 60 samples argument works for each dataset. IE Run 500 samples, show that from any 60 randomly chosen samples we get a final test error within x\% of the local optimum found in the 500 samples. Number of samples subject to change. Or do math to put confidence on this. This needs to be done to verify my hyperparameter space is chosen appropriately.    
+
+\subsection{Analyze the Effect of Changing the Data Generating Distribution/Priors on ANN Performance}
+
+    Investigate the effect of changing the detector parameters (changing the data generating distribution and/or priors) on the ANNs performance. Need performance metrics to check against - confusion matrix or F1 score on a simulated or real dataset could be used here. 
+    
+    This can also be demonstrated by using our two NaI detectors for real spectra. Both detectors are slightly different, so they will produce slightly different spectra. Ideally we would have more than two devices.
+    
+\subsection{Analyze the Effect of Training Set Size on ANN Performance} 
 
 
     Change the size of the training set for each dataset and see if there's a general 'best smallest sized' training set.
@@ -176,8 +447,11 @@ Show  that  without  regularization  we  overfit  hardcore  with a deep network 
 %For the task of a source search in a city, the training dataset will be created to meet the specifications under the ANSI Standard 42.34-2006 for gamma-ray RIIDs. The dataset will be composed of 29 gamma-ray producing isotopes from the ANSI standard as well as the 3 major background isotopes (background $^{40}$K and daughters from uranium and thorium). The ANSI standard contains SNM, medical sources, and other benign sources of interest. 
 
 
-\section{Conclusion}
+\chapter{Conclusion}
 
+
+\bibliographystyle{IEEEtran} % Dunno what format they want this!!! -MK 9/19/16
+\bibliography{refs.bib}
 
 \end{document}
 
