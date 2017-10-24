@@ -97,9 +97,27 @@
 
 \chapter{Introduction}
 
+The main question addressed in this work is: Can one artificial neural network (ANN) methodology be used to solve different problems in automated radio-isotope identification using simulated spectral datasets. The idea to use ANNs first came as a method to exploit a potential data source in post-detonation nuclear forensics. After zero-time, first responders will likely flood the affected area. Some of these responders will be fitted with gamma-ray spectrometers, the cheapest and most common being some size of NaI(Tl) scintillation crystals. While these crystals produce a gamma-ray spectrum with somewhat poor resolution, their potential ubiquity over heavier, more expensive systems that may require a day to cool (HPGe need liquid nitrogen temperatures to operate. This requires mechanical cooling or a dewar of liquid nitrogen. Regardless of the cooling method, they require about a day to cool if not already at operational temperature.) make them a potential source of a mountain of spectroscopic data from blast debris. This spectroscopic data can be used to identify the isotopes and their ratios in the debris. This data can be used to begin the process of attribution. Currently, the isotopics are calculated by sending debris samples to a few labs around the country (one of which is the Counting Room in the C-NR division at LANL). The debris is then chemically separated into constituent fission products, and those fission products are counted using well shielded HPGe detectors to very accurately determine isotopics. While this process will result in a more accurate measure of debris isotopics, the time necessary to transport, perform the chemical separation for each piece of debris, and measure the debris with the HPGe detectors may be on the order of days. While this may sound quick, this time will sacrifice some of the short-lived isotopes in the debris. In addition to this, if attribution time can be shortened from days to hours, international response could be organized quicker. 
+
+Current gamma-ray spectroscopy techniques may be inadequate to be used for post-detonation debris analysis. Feature extraction techniques typically rely on fitting non-overlapping gamma-ray peaks. In post-detonation debris, many isotopes will be emitting gamma-rays, creating multiple overlapping gamma-lines. Template matching algorithms may need an excessively large library to handle this task. Each sample of debris will contain tens of isotopes in complicated combinations. These exact combinations may be hard to determine  \textit{a priori} due to differences in device design and fractionation effects. 
+
+
+
+
+
+
+
+
 The aim of this dissertation is to demonstrate the performance of artificial neural networks (ANNs) for various tasks related to identifying and quantifying the radioisotopes in low-resolution gamma-ray spectra. The low-resolution detector of interest in this work is a 2-inch by 2-inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of production, low cost, and acceptable resolution. Tasks of interest include unknown threat source search in a city, plutonium and uranium enrichment measurements, and fission product analysis for post-detonation nuclear explosive debris. 
 
 An ANN will learn to perform these tasks by learning from simulated datasets that represent these tasks. The aim of this work is to demonstrate that an ANN can be taught to perform different isotope identification tasks using a simulated dataset using the same general training method.
+
+
+
+
+
+
+
 
 
 \chapter{Literature Review}
@@ -396,6 +414,14 @@ For the uranium enrichment problem we have depleted uranium source blocks (from 
 Because it is impossible to get fresh (on the order of minutes or hours old) post-detonation debris, a surrogate spectra dataset would be needed here. There are a few ways to get a surrogate dataset for this. To to the difficulty in acquiring these data, it may be more prudent to use a simulated dataset to analyze the performance for this task.
 
 
+%%%%%% v v v v v v    HOLY SHIT DO THIS    v v v v v %%%%%%%%%% 
+
+For post-detonation debris analysis, we will have some prior information on the possible isotopic composition of the debris. Using this information in a neural network would be make it work well. Using uniform combinations is a terrible idea, and I can demonstrate this. Using a custom 'debris cocktail' of whatever cocktail of radioisotopes I have, 
+
+
+%%%%%% ^ ^ ^ ^ ^ ^    HOLY SHIT DO THIS    ^ ^ ^ ^ ^ %%%%%%%%%% 
+
+
 \section{Extend the same ANN method to LaBr and CsI}
    
 Extend the algorithm to CsI (D3S detectors) and LaBr. This would cause a stir in the field. Or at least get some interesting attention. 
@@ -411,7 +437,8 @@ The ANN training method seems to work okay, but the evidence for this are anecdo
 \subsection{Fooling the Model}
 
     ANNs typically can be fooled by using adversarial examples. An adversarial example is  
-    Add increasing amounts of Gaussian noise to all channels, 
+    
+    Examples include adding increasing amounts of Gaussian noise to all channels, 
 
 
 % Things indented are things I \really\ want to do slash are things that I think would be hard to argue against 
@@ -437,6 +464,29 @@ The ANN training method seems to work okay, but the evidence for this are anecdo
 
 
 Show  that  without  regularization  we  overfit  hardcore  with a deep network (at extreme of random bounds 5 layers and 1000(?)hidden nodes)
+
+
+\section{Feature Extraction Methods as Input to an ANN}
+
+% This is super interesting. 
+
+Previous work has shown that feature extraction (peak locations and areas) using wavelets operates well using a Bayesian model for automated isotope identification. 
+
+\subsection{Autoencoder}
+
+%% HOLY SHIT THIS IS INTERESTING
+
+An autoencoder can be applied to our problem in two interesting ways. In the first way, the autoencoder input and output are the gamma-ray spectrum. Once trained, the intermediate layer can be used as a learned dimensionality reduction that can then be used as input to the regression ANN. This can be compared to other dimensionality reduction algorithms like PCA, non-linear PCA, and multiclass LDA. The ANN performance (precision, recall, F1 score) can be compared between these methods on different datasets to determine if they should be pursued over using the full gamma-ray spectrum for different tasks.
+
+Another fun implementation for an autoencoder is using the input to be randomly gain-shifted spectra and the output to be 'perfectly calibrated' spectra. Perfect calibration will correspond to a spectrum with the 1$^{st}$ channel being 0 MeV and the 1024$^{th}$ channel being 3 MeV.  The random gain-shift can be based on a temperature shift of +/-20 C. This range should also cover uncalibrated detectors. The intermediate layer can then be used as input to a regression ANN as described above. This may be a better method of incorporating gain-invariance. Currently the ANN learns the gain changes, important features, and the calculation for the count fractions. It may make more sense for the autoencoder to find common features for the gain changes.
+
+An autoencoder can also be used for shielded spectra. Input shielded spectra, output non-shielded spectra. If the autoencoder learned something useful for the shielded case, it should perform better than an autoencoder with an input/output being the shielded spectrum.
+
+
+
+
+Comparing how different autoencoders learn based on their input/output would be suuuuuper cool. Investigation will start on CVT2017.
+
 
 
 
