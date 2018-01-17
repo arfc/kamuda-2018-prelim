@@ -12,7 +12,7 @@
 
 %%%%%%%%%%%%%%%
 % MK Added to make bib work
-\bstctlcite{IEEEexample:BSTcontrol}
+% \bstctlcite{IEEEexample:BSTcontrol}
 
 % MK added to highlight stuff
 \usepackage{color,soul}
@@ -40,7 +40,7 @@
 \DeclareMathOperator*{\argminA}{arg\,min} % Jan Hlavacek
 
 % Uncomment the appropriate one of the following four lines:
-\phdthesis
+%\phdthesis
 %\phdthesis
 %\otherdoctorate[abbrev]{Title of Degree}
 %\othermasters[abbrev]{Title of Degree}
@@ -49,7 +49,7 @@
 \author{Mark Kamuda}
 \department{Nuclear Plasma and Radiological Engineering}
 %\department{\mbox{Nuclear, Plasma, and Radiological Engineering}}
-\degreeyear{2017}
+\degreeyear{2018}
 
 % Advisor name is required for
 % - doctoral students for the ProQuest abstract
@@ -59,10 +59,11 @@
 % Uncomment the \committee command for
 % - all doctoral students
 % - master's students who have a master's committee
-\committee{Assistant Professor Kathryn Huff, Adviser\\
-        Prof_1\\
-        Prof_2\\
-        Prof_3}
+\committee{Professor Kathryn Huff, Adviser\\
+        Professor Rizwan Uddin\\
+        Professor Tomasz Kozlowski\\
+        Professor Mark Hasagawa-Johnson\\
+        Professor Clair Sullivan}
 
 
 
@@ -86,6 +87,11 @@
 
 \frontmatter
 
+
+\begin{abstract}
+Abstract goes here.
+\end{abstract}
+
 \tableofcontents
 
 \listoftables
@@ -97,20 +103,28 @@
 
 \chapter{Introduction}
 
-The main question addressed in this work is: Can one artificial neural network (ANN) methodology be used to solve different problems in automated radio-isotope identification using simulated spectral datasets. The idea to use ANNs first came as a method to exploit a potential data source in post-detonation nuclear forensics. After zero-time, first responders will likely flood the affected area. Some of these responders will be fitted with gamma-ray spectrometers, the cheapest and most common being some size of NaI(Tl) scintillation crystals. While these crystals produce a gamma-ray spectrum with somewhat poor resolution, their potential ubiquity over heavier, more expensive systems that may require a day to cool (HPGe need liquid nitrogen temperatures to operate. This requires mechanical cooling or a dewar of liquid nitrogen. Regardless of the cooling method, they require about a day to cool if not already at operational temperature.) make them a potential source of a mountain of spectroscopic data from blast debris. This spectroscopic data can be used to identify the isotopes and their ratios in the debris. This data can be used to begin the process of attribution. Currently, the isotopics are calculated by sending debris samples to a few labs around the country (one of which is the Counting Room in the C-NR division at LANL). The debris is then chemically separated into constituent fission products, and those fission products are counted using well shielded HPGe detectors to very accurately determine isotopics. While this process will result in a more accurate measure of debris isotopics, the time necessary to transport, perform the chemical separation for each piece of debris, and measure the debris with the HPGe detectors may be on the order of days. While this may sound quick, this time will sacrifice some of the short-lived isotopes in the debris. In addition to this, if attribution time can be shortened from days to hours, international response could be organized quicker. 
+The main question addressed in this work is: Can artificial neural networks (ANNs) using simulated spectra as training data automate isotope identification and quantification. ANNs can incorporate abstract features of a gamma-ray spectrum in non-intuitive ways. This may give ANNs the ability to identify and quantify isotopes using large isotope libraries practical for domestic nuclear security, operate using low-resolution NaI radiation detectors without knowing the detector calibration or background spectrum.
 
-Current gamma-ray spectroscopy techniques may be inadequate to be used for post-detonation debris analysis. Feature extraction techniques typically rely on fitting non-overlapping gamma-ray peaks. In post-detonation debris, many isotopes will be emitting gamma-rays, creating multiple overlapping gamma-lines. Template matching algorithms may need an excessively large library to handle this task. Each sample of debris will contain tens of isotopes in complicated combinations. These exact combinations may be hard to determine  \textit{a priori} due to differences in device design and fractionation effects. 
+% The idea to use ANNs first came as a method to exploit a potential data source in post-detonation nuclear forensics. After the device explodes, first responders will likely flood the affected area. Some of these responders will be fitted with gamma-ray spectrometers, the cheapest and most common being some size of NaI(Tl) scintillation crystals. While these crystals produce a gamma-ray spectrum with somewhat poor resolution, their potential ubiquity over heavier, more expensive systems that may require a day to cool (HPGe need liquid nitrogen temperatures to operate. This requires mechanical cooling or a dewar of liquid nitrogen. Regardless of the cooling method, they require about a day to cool if not already at operational temperature.) make them a potential source of a mountain of spectroscopic data from blast debris. This spectroscopic data can be used to identify the isotopes and their ratios in the debris. This data can be used to begin the process of attribution. Currently, the isotopics are calculated by sending debris samples to a few labs around the country (one of which is the Counting Room in the C-NR division at LANL). The debris is then chemically separated into constituent fission products, and those fission products are counted using well shielded HPGe detectors to very accurately determine isotopics. While this process will result in a more accurate measure of debris isotopics, the time necessary to transport, perform the chemical separation for each piece of debris, and measure the debris with the HPGe detectors may be on the order of days. While this may sound quick, this time will sacrifice some of the short-lived isotopes in the debris. In addition to this, if attribution time can be shortened from days to hours, international response could be organized quicker. 
 
-
-
-
+% Current gamma-ray spectroscopy techniques may be inadequate to be used for post-detonation debris analysis. Feature extraction techniques typically rely on fitting non-overlapping gamma-ray peaks. In post-detonation debris, many isotopes will be emitting gamma-rays, creating multiple overlapping gamma-lines. Template matching algorithms may need an excessively large library to handle this task. Each sample of debris will contain tens of isotopes in complicated combinations. These exact combinations may be hard to determine  \textit{a priori} due to differences in device design and fractionation effects. 
 
 
 
 
-The aim of this dissertation is to demonstrate the performance of artificial neural networks (ANNs) for various tasks related to identifying and quantifying the radioisotopes in low-resolution gamma-ray spectra. The low-resolution detector of interest in this work is a 2-inch by 2-inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of production, low cost, and acceptable resolution. Tasks of interest include unknown threat source search in a city, plutonium and uranium enrichment measurements, and fission product analysis for post-detonation nuclear explosive debris. 
 
-An ANN will learn to perform these tasks by learning from simulated datasets that represent these tasks. The aim of this work is to demonstrate that an ANN can be taught to perform different isotope identification tasks using a simulated dataset using the same general training method.
+
+
+
+This dissertation will demonstrate the performance of ANNs for tasks related to identifying and quantifying isotopes in low-resolution gamma-ray spectra. The low-resolution detector of interest in this work is a 2-inch by 2-inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of use, low cost, and acceptable resolution for gamma-ray spectroscopy. Tasks that will be investigated will focus on identifying isotopes in the ANSI N42-34-2006 required list \cite{ANSI}. This ANSI standard also requires isotope identification algorithms to operate when the radioactive material is behind shielding. Accordingly, the impact of shielding will also be incorporated into this work. 
+
+In addition to isotope identification, this work will explore the ability of ANNs to quantify the count contribution from each isotope. The ANN's ability to extract count contribution information from gamma-ray spectra is important for nondestructive analysis (NDA). While NDA is useful for. The second purpose is a possible use of neural networks in post-detonation nuclear forensics. In post-detonation nuclear forensics, a large number of radioactive fission products are created. Quantifying the amount of isotopes in post-detonation debris can yield useful information about the device's properties. Mixtures of laboratory sources will be used as a surrogate for post-detonation debris and the ability for the ANN to accurately calculate the mixture components will be established.   
+
+Another case where knowing the isotope quantities in a mixture of isotopes is in uranium enrichment calculations. Knowing the enrichment of uranium is important in two areas. The first are is when uranium is identified at a border crossing. Typically the spectrum would need to be given to a trained spectroscopist to quantify the enrichment, but this process could be automated on the device first used to identify it. The second case would be in treaty verification technologies. Low-resolution NaI gamma-ray detectors decrease the amount of possibly sensitive information while giving enough information to produce accurate enrichment quantification. The fact that ANNs can be taught to ignore certain patterns and only give information agreed upon by treaty signatories also makes them a good tool for treaty verification. The ability of ANNs to operate without knowing the shielding and background spectrum makes them better for zero knowledge scenarios. NaI detectors also have a higher efficiency than the higher resolution HPGe. This means that the counting times for NaI are smaller than would be required to get the same number of counts using an HPGe. 
+
+
+
+% An ANN will learn to perform these tasks by learning from simulated datasets that represent these tasks. The aim of this work is to demonstrate that an ANN can be taught to perform different isotope identification tasks using a simulated dataset using the same general training method.
 
 
 
@@ -123,381 +137,279 @@ An ANN will learn to perform these tasks by learning from simulated datasets tha
 \chapter{Literature Review}
 
 
-\section{Scintillation Detector Physics}
+\section{Gamma-Ray Spectroscopy for Isotope Identification}
 
-Should I extend to general gamma-ray detector physics? how thorough should this section be?
+There are a number of difficult things associated with performing isotope identification. Traditionally, isotope identification is conducted by a trained spectroscopoist. Once a spectrum of interest is identified,  a spectroscopist will identify photopeaks \cite{Sullivan2010}. 
+
+There are many automated radioisotope identification methods available, but few perform well given a low-resolution gamma-ray spectrum of a mixture of radioisotopes. Common methods include library comparison algorithms, region of interest (ROI) algorithms, principle component analysis (PCA), and template matching.
+
+Library comparison algorithms attempt to match photopeak energies found in a gamma-ray spectrum with those found in a library of known isotope decay energies. Drifts and uncertainties in detector calibration can lead to misidentifying photopeaks, leading to incorrect isotope identifications \cite{burr2009}. To be automated, this method needs an algorithm to extract photopeak centroids from a spectrum. Photopeak extraction algorithms face difficulties when a large number of photopeaks overlap in a spectrum, such as when a mixture of radio-isotopes are measured with a low-resolution detector \cite{xiong2015}.
+
+ROI algorithms search for elevated counts compared to background in a region where photopeaks are expected to be for different radioisotopes. ROI algorithms may also operate poorly when photopeaks of different radioisotopes overlap \cite{burr2009}. For this reason, large isotope libraries will preform poorly using this method. Similarly to the library comparison algorithm, calibration drift may shift photopeaks into different neighboring ROIs, leading to incorrect identification. The ROI method has been used to differentiate normally occuring radioactive material (NORM) from special nuclear material (SNM) using plastic scintillators \cite{Ely2006}.
+
+PCA can also be applied to radioisotope identification. The goal of PCA is to reduce the dimensionality of a dataset into uncorrelated variables \cite{Jolliffe2002}. Using a few of these principle components, the data may be represented in a reduced space that contains most of the information present in the original data. The transformed data can then be clustered based on isotope identity. Clustering algorithms may include K-means or Mahalanobis distance \cite{Kanungo2002, Kumari2012}. PCA has been applied to isotope identification using plastic scintillators \cite{Boardman2012} and anomaly detection using both plastic scintillators and NaI detectors \cite{runkle2006b}. Despite the progress of PCA in some isotope identification problems, there has not been significant progress in applying PCA to separating mixtures of isotopes in gamma-ray spectra.
+
+Template matching algorithms find an example in a database of gamma-ray spectra that most closely matches a measured spectrum \cite{burr2009}. The database of spectra can contain multiple detector calibration settings, shielding materials, and source-to-detector distances. Goodness of fit can be measured using a hypothesis test such as chi-squared test, euclidean distance, or Mahalanobis distance. While a sufficient amount of example spectra can be used to identify almost any measured spectrum, the drawback of this method is the time necessary to compare a measured spectrum to the library and the computer memory necessary to store said library. This method also may have difficulty when mixtures of isotopes are considered, although work is being done to correct this \cite{mattingly2010}.
 
 
-\section{Isotope Identification}
 
+\section{Artificial Neural Networks}
+
+Artificial neural networks were first created to mimic biologic neurons. Since their creation, they have demonstrated promising results on a variety of different classification and regression tasks \cite{Jeyanthia2015, Krizhevsky2012, Rababaah2015}. The following sections will give an overview of how ANNs learn and operate.
+
+
+\subsection{Architecture and Training}
+
+ANNs work by mapping arbitrary input spaces, $\mathbb{R}^N$, to arbitrary output space, $\mathbb{R}^K$. An example one hidden layer ANN mapping $\mathbb{R}^N$ $\mapsto$ $\mathbb{R}^K$ is shown in Figure \ref{fig:Network}. Each circle represents a neuron, or node. The mathematical process governing each neuron in the ANN is shown in Figure \ref{fig:Node}. In Figure \ref{fig:Node}, the signal from the previous layer is propagated to the next by applying some function, typically sigmoidal, to the dot product of the signal from the previous layer and the weight vector going into a given node, B$_{j}$ in Figure \ref{fig:Node}. Given a one-layer ANN with a finite number of hidden nodes, any function $\mathbb{R}^N$ $\mapsto$ $\mathbb{R}^K$ can be described to arbitrary precision \cite{hornik1991}. Additional hidden layers increase the representational power of an ANN, reducing the number of nodes and computational power required to represent a function. There is no direct method to compute the number of hidden layers or nodes for a given problem. These, along with other hyperparameters, need to be optimized for a given dataset.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Network}
+    \caption{Example ANN with input layer A, hidden layer B, and output layer C.}
+    \label{fig:Network}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{images/Node_ABC_2}
+	\caption{Summary of the operation of a single neuron.}
+	\label{fig:Node}
+\end{figure}
+
+Artificial ANNs learn a function by changing the weights connecting the layers so that some error function is minimized for a given dataset. One popular method to update the weights is through the process of gradient descent through the backpropogation of errors \cite{Rumelhart1986}. The update equation for a single weight, $w_j$, is shown in Equations \ref{eq:update1} and \ref{eq:update2}. In these equations, $Error$ is the given error function to be minimized (commonly mean squared error or cross entropy) and $\eta$ is the learning rate of the ANN.
+
+
+\begin{equation} \label{eq:update1}
+\Delta w_{j} = - \eta \frac{dError}{dw_j}
+\end{equation}
+
+\begin{equation} \label{eq:update2}
+w^{new}_{j} = w^{old}_{j} + \Delta w_{j}
+\end{equation}
+
+\subsection{Hyperparameters}
+
+In general, ANNs have a tendency to memorize their training set in a process called overtraining. An overtrained ANN will tend to incorrectly identify novel data. To prevent this, a number of hyperparameters were used to prevent overfitting and optimize performance. Unfortunately, there is currently no known method to know which hyperparameters have an impact on model performance before training. Because of this, a number of popular hyperparameters are typically added to a model and a random hyperparameter search is used to identify those which are important. \iffalse Because there is no direct method to identify which hyperparameters are important or what their values should be, a random hyperparameter search can be used to find a close-to-optimal network structure and hyperparameter values.\fi There is evidence that a random search in a given hyperparameter range finds better hyperparameters quicker than a grid search in the same range \cite{Bergstra2012}. There is also a proof showing that given 60 points randomly sampled in some space with a finite minimum, the minimum of those 60 random samples is within 5\% of the true minimum with 95\% probability \cite{Zheng2015}. Training 60 ANNs is computationally feasible, making this a good method to find a close-to-optimal ANN for a given dataset. 
 
 
 
 \section{Isotope Identification Using ANNs}
 
+There have been a number of published papers which apply ANNs to automated isotope identification. ANNs have been applied to peak fitting \cite{Abdel-Aal2002}, isotope identification \cite{Abdel-Aal1996, Medhat2012}, and activity estimation \cite{Abdel-Aal1996, Vigneron1996}. Many of this work rely on ROI methods \cite{Pilato1999}, feature extraction \cite{Chen2009}, high-resolution gamma-ray spectra as the input to the ANN \cite{Yoshida2002}, small libraries of isotopes, and assume perfectly calibrated detectors. ANN training methods created for high-resolution gamma-ray spectra may not perform well when trained using low-resolution spectra given the large discrepancy in resolution. ANN training that relies on ROI methods may not perform well when ROIs overlap significantly with large libraries of isotopes.
+
+It has been shown that an ANN may be trained to perform isotope identification and quantification using low-resolution NaI gamma-ray spectrum using a library of five isotopes \cite{Olmos1991}. While promising, this study did not include complicated source mixture analysis. This study also used a library too small to be of practical use. The American National Standards Institutes (ANSI) has identified 31 gamma-ray emitting isotopes that automated isotope identification algorithms should be able to identify \cite{ANSI}.
+
+
+\chapter{Artificial Neural Network Approach to Identifying and Quantifying isotopes in Gamma-Ray Spectra}
+
+
+\section{Introduction}
+
+The ANN presented here is trained to quantify the count contribution of each isotope from a library. The ANN uses simulated gamma-ray spectra, this make simulating additional datasets simple and quick. The ANN structure, training details, and hyperparameter optimization are described. 
+
+
+\section{Artificial Neural Network Structure}
+
+The fully connected ANN explored in this work use rectified linear ($relu$) activation function, seen in Equation \ref{eq:relu}, with a $softmax$ output function, seen in Equation \ref{eq:softmax}.
+
+\begin{equation} \label{eq:relu}
+relu(x) = max(0,x).
+\end{equation}
+
+\begin{equation} \label{eq:softmax}
+softmax(z_j) = \frac{\exp(z_j)} {\sum_{k=1}^{K} \exp(z_k)}.
+\end{equation} 
+
+The $relu$ function was chosen for the node activations because they are easy to optimize and generally perform better than other non-linear functions \cite[pg. 189]{Goodfellow-et-al-2016}. While the $softmax$ function is traditionally used in classification ANNs, using it here ensures the output from the ANN is normalized to unity. This allows the ANN to output relative count contributions from each isotope. This method was shown to perform well for quantifying isotopes in real and simulated spectra \cite{kamudaThesis2017,kamuda2017}. By setting a detection threshold based on the highest count contribution, this method can also be used as an identification algorithm. For example, Table \ref{table:top_five} shows the top five isotope outputs from an ANN that used the spectrum in Figure \ref{fig:top_five} as input. Using a threshold of 15\%, any isotope with a contribution below 15\% of 0.441 can be ignored. This leads to a correct identification of $^{60}$Co, $^{137}$Cs, and background.
+% The threshold used can be chosen to ensure a desired false alarm rate on some dataset.
+
+\begin{table}[H]
+\centering
+\caption{Top five isotopes found by an ANN trained to quantify isotopes. }
+\label{table:top_five}
+\begin{tabular}{|c|c|}
+\hline
+Isotope    & \begin{tabular}[c]{@{}c@{}}Count \\ Contribution\end{tabular} \\ \hline
+$^{60}$Co  & 0.441                                                         \\ \hline
+$^{137}$Cs & 0.440                                                         \\ \hline
+Background & 0.068                                                         \\ \hline
+$^{99}$Mo  & 0.019                                                         \\ \hline
+$^{235}$U  & 0.017                                                         \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/CoCs_mix}
+    \caption{Gamma-ray spectrum of a 0.288 $\mu$Ci $^{60}$Co source measured from a distance of 7.5 cm from the detector face and a 0.890 $\mu$Ci $^{137}$Cs source. The count rate on the detector face is  }
+    \label{fig:top_five}
+\end{figure}
+
+
+\section{Dataset Construction}
+
+In order to train an ANN, a training set and training key must be provided. The training set is a set of ANN input data and the training key is the correct ANN output for each input. Because creating a training set of real gamma-ray spectra is infeasible, the training set used in this work was simulated. The training set was created using a one-dimension Monte Carlo radiation detector simulation program called GADRAS \cite{mitchell2014}. The simulation process began by simulating individual 1 mCi sources with no background. Each source was simulated at a distance of 30cm from a 2 inch by 2 inch Ortec 905-3 NaI spectrometer for 10 hours, ensuring each spectrum had low statistical noise. These single isotope sources were then sampled using the inverse transform sampling method \cite{Devroyne}. This allows the creation of arbitrary source combinations. The background isotopes were modeled using built-in GADRAS background sources for $^{40}$K, uranium and daughters in soil, and thorium and daughters in soil.
+
+Because the calibration on NaI detectors shifts over time (due to voltage drift in the electronics and changes in crystal temperature), a method to change training spectra calibration was included. To mimic gain shift, the channels in each spectrum were linearly rebinned by some percent. After rebinning, the resulting spectrum was reconstructed using third order spline interpolation with the new bin positions.
+
+
+Using this method, many training sets can be created depending on different algorithm goals. The training set and isotope library can be modified for specific problems like unknown source interdiction, uranium enrichment calculations, and post-detonation nuclear forensic debris analysis. Methods of creating ANNs for these problems will be described in later sections.
+
+% The isotope library chosen for this demonstration was 29 gamma-ray producing isotopes from the ANSI N42.34-2006 standard, as well as $^{152}$Eu \cite{ANSI}. Based on lab observations using an Ortec 905-3 NaI spectrometer, the average background count rate was set at 85 counts per second (cps). Each spectrum in the training set had a maximum of 5 different non-background isotopes included in the spectrum. Each isotope had a count rate which was logarithmically distributed between 10 and 1000 cps. The exposure time was logarithmically distributed between 10 and 2000 seconds. Each isotope, excluding those in background, had an equal probability of being included in each spectrum. The counts from background were distributed uniformly between background thorium, background uranium, and background $^{40}$K.
 
 
 
-\section{Identification Tasks}
+\section{Training Details and Hyperparameter Optimization}
 
-\subsection{Source Search in a City}
-An unknown source search in a city is a difficult problem. The background radiation in a city fluctuates due to proximity to naturally radioactive structures (marble statues, concrete buildings) and the weather (rain increases background radiation through leeching radioactive gases from the soil as well as washing radioactive particles out of the upper atmosphere). An identification algorithm will need to be able to discriminate between these naturally occurring increases in radioactivity with true threat sources. Additionally, measurement time may be limited in the field. For example, a police officer may only have a minute to measure an area or object, and will expect a quick response from the identification instrument. To further complicate this task, NaI(Tl) spectrometers are prone to gain drift. Gain drift can occur naturally over time and when the device changes temperature. While gain drift can be corrected through frequently re-calibrating the detector, the user may not re-calibrate as often or as precisely as they should for optimum performance. This scenario requires an algorithm that can quickly and accurately identify a large number of threat isotopes in a spectrum with an unknown background, low signal-to-noise ratio (due to potential distance from source to detector), a large variance in the measured data (due to the short measurement time), and an unreliable calibration (due to user error).
+Once the ANN hyperparameters are decided on, an optimization algorithm is needed to train the model. The ADAM optimizer \cite{Kingma2015} was chosen as the training algorithm for this work due to its incorporation of parts of other successful optimization algorithms and its reported superior performance over these algorithms. Another benefit of the ADAM optimizer is introduction of only one additional hyperparameter, the learning rate. Other optimizers require tuning more than one additional hyperparameter. The cost function the ANN minimized during training was the average cross entropy between the correct labels, $y_n$, and the network predictions, $\hat{y}_n$, seen in Equation \ref{eq:CrossEntropy}. This cost function was chosen because it is traditionally used with ANNs whose output is the $softmax$ function. 
 
-\subsection{Plutonium and Uranium Enrichment Measurements}
-
-
-Plutonium and uranium enrichment measurements are incredibly important for nuclear security applications. Currently, these types of analyses depend on high-resolution devices such as high-purity germanium (HPGe) semiconductor detectors. While the resolution of these detectors (0.1\%) is much better than NaI(Tl) (5-6\%).
-
-We're trying to apply a neural network to identify the isotopes in freshly enriched uranium isotopics. The first step in doing this is 
+\begin{equation} \label{eq:CrossEntropy}
+E = -{\frac{1} N} \sum_{n=1}^N y_n \log(\hat{y}_n) +  (1-y_n) \log(1-\hat{y}_n).
+\end{equation}
 
 
 
+Raw data is typically preprocessed before being input to an ANN. For this work each spectrum was preprocessed by scaling the counts in each bin between [0,1]. Scaling the inputs improves numerical stability during training. 
+
+As previously discussed, hyperparameters are often necessary to properly train an ANN. The following hyperparameters are considered in this study are: the number of neurons in each layer, the number of layers used, initial learning rate for the training algorithm, the $L_2$ weight regularization strength, and neuron dropout rate. 
+
+Adding $L_2$ weight regularization allows the magnitude of the weights to increase only when there is a comparable reduction in the unmodified error function.
+%
+\begin{equation} \label{eq:L2_Reg}
+\tilde{E} = E + \sum_i \lambda w_i^n.
+\end{equation}
+%
+In Equation \ref{eq:L2_Reg}, $w_i$ is the weight between each neuron in the ANN and $\lambda$ is the regularization strength hyperparameter. A larger $\lambda$ will force the ANN to prefer smaller weights connecting the neurons. If $\lambda$ is too small, the model is more likely to overfit. If $\lambda$ is too large, the ANN will preferentially minimize the $L_n$ error, failing to learn the desired task.
+
+Another method to reduce model capacity is neuron dropout. Neuron dropout is the process of temporarily removing a neuron from the ANN architecture during training \cite{Srivastava2014}. The probability that a neuron is removed is called the neuron dropout rate, which is a hyperparameter. By applying dropout throughout training, the ANN's architecture changes every iteration. The makes neuron dropout a cost efficient way to average many different ANN architectures, improving performance.
+
+% To reduce free parameters that might lead to overfitting, the number of neurons in each layer is typically smaller than the size of the input layer, in this case 1024. Another method of   Because  kept below 10$^{4}$.   
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Post-Detonation Debris Analysis}
-
-
-\chapter{Previous Work}
-
-\section{Published Work}
-
-The work I published has a lot of room for improvement. Some physics in the MCNP model were neglected, like any radiation contribution from bremsstrahlung and environmental scatter. Also the background isotope spectra were very wrong. These were generated assuming a point source of radiation. Real background is distributed in the soil. Many scattering events in soil along with skyshine contribute to a spectrum that looks very different from a point source (cite MCNP background simulation paper). 
-
-There were parts of the published work that were good. The sampling method based on isotope templates is a good method to simulate lots of realistic gamma-ray spectra. One of the most difficult parts of ANN training is creating a good training set that represents reality. This method can be used to simulate most things, which is hugely useful. The results of the published work were also very promising. Despite the unrealistic physics model used in the simulation, the neural network correctly identified isotopes in a variety of simulated and real spectra. 
-
-Moving away from the MCNP model, we used GADRAS to create our template spectra. GADRAS has done all the physics heavy lifting for us, which is awesome. Also lets us simulate shielding, different scattering environments, detectors with different parameters(FWHM, gain, crystal dimensions (!)), and entirely different detectors. We have demonstrated that an ANN trained with this data can accurately identify poor quality simulated spectra. Real spectra are still needed (And likely will be included in the results section).
-
-\section{Fa17 Work on three datasets}
-
-Might just be shielding. This is a complicated problem. 
-
-\subsection{Current Proposed Method}
-
-
-The current method begins by simulating a gamma-ray spectrum dataset for a given identification and quantification task. The ANN inputs are 1024 channels of a NaI spectrum and the output is percent count contributions from each isotope in the library used. The number of input channels can be easily changed to accommodate other detectors. 
-
-\begin{enumerate}
-    \item Simulate dataset for a given ID task. 
-  
-    \item Train about 200 ANNs with randomly chosen parameters. 60 sample argument can be used or extended (or proved using this fun example! Actually yes do this for ever dataset. Yes yes yes.)
-    \subitem This is a little fuzzy, could analyze further or make more rigorous.
-    \subitem Current argument: want an ANN too large for the task, add regularization terms to reduce power of network. Let random search choose decent regularization terms. 
-    \subsubitem Could show that without regularization we overfit hardcore with super deep network (at extreme of random bounds 5 layers and 1000(?) hidden nodes). 
-    \subsubitem Could show that tiny networks will not learn the problem.
-    \subsubitem These are still slightly fuzzy evidence that my method works. Issue is I don't think things exist to actually quantify this.
-
-    \item Once the best network is found, train a new network using those parameters.
-    
-    \item Profit ???
+\section{Key Results}
 
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \section{Thesis and TNS Publication}
+
+% The work I published has a lot of room for improvement. Some physics in the MCNP 6 model were neglected, like any radiation contribution from bremsstrahlung and environmental scatter. Also the background isotope spectra were very wrong. These were generated assuming a point source of radiation. Real background is distributed in the soil. Many scattering events in soil along with skyshine contribute to a spectrum that looks very different from a point source. %(cite MCNP background simulation paper). 
+
+% There were parts of the published work that were good. The sampling method based on isotope templates is a good method to simulate lots of realistic gamma-ray spectra. One of the most difficult parts of ANN training is creating a good training set that represents reality. This method can be used to simulate most things, which is hugely useful. The results of the published work were also very promising. Despite the unrealistic physics model used in the simulation, the ANN correctly identified isotopes in a variety of simulated and real spectra. 
+
+% Moving away from the MCNP model, we used GADRAS to create our template spectra. GADRAS has done all the physics heavy lifting for us, which is awesome. Also lets us simulate shielding, different scattering environments, detectors with different parameters(FWHM vs energy, nonlinear calibration, crystal dimensions), and entirely different detectors. We have demonstrated that an ANN trained with this data can accurately identify poor quality simulated spectra. Real spectra are still needed to verify these results.
 
 
+% The current method begins by simulating a gamma-ray spectrum dataset for a given identification and quantification task. The ANN inputs are 1024 channels of a NaI spectrum and the output is percent count contributions from each isotope in the library used. The number of input channels can be easily changed to accommodate other detectors. 
 
 
+% \section{Shielding Experiment Results}
 
-\end{enumerate}
+% We're seeing some confusion in low-energy isotopes. Still need to validate results on real spectrum dataset. 
 
+% \section{Uranium Enrichment Measurement Experiment}
 
+% The ability for an ANN to preform isotope quantification for uranium enrichment measurements was investigated. This work also explored if dimension reduction techniques (PCA and autoencoders) improved ANN performance over using the full spectrum as ANN input. As seen in Figure \ref{fig:enrichment_error}, PCA and the autoencoder stopped learning before the full spectrum. This indicates that using the full spectrum as ANN input may be superior to using dimension reduction techniques for this problem. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/MSE_vs_iteration}
+    \caption{Mean square error vs training iteration for three different ANN inputs.}
+    \label{fig:enrichment_error}
+\end{figure}
+
+% Table \ref{fig:enrichment_MSE_table} also shows that using the full spectrum as ANN input is superior to dimension reduction techniques. This table also shows that the ANN is best at identifying $^{235}$U. The accuracy of $^{235}$U implies that ANN is not learning calibration drift well. The 186 keV peak from $^{235}$U has no overlap, even with gain drift, with the other isotopes in the training library. This allows the ANN to accurately identify it. Conversely, $^{231}$Th and $^{234}$Th emit similar low-energy gamma-rays. These become easily confused with gain drift. This implies that gain correction and isotope identification and quantification should be handled by a separate algorithms. Suggestions for improvements for this will be explained in later sections.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/enrichment_MSE_table}
+    \caption{Table showing the average mean square error from 1000 simulated enriched uranium spectra.}
+    \label{fig:enrichment_MSE_table}
+\end{figure}
 
 
 
 \chapter{Future Work and Proposed Experiments}
 
-Work for this dissertation will fall into two main categories. The first will be determining how to construct the training and testing data sets. For each dataset, the specific isotopes and priors on the isotopes in each spectrum need to be determined.  The second category will be analyzing how well the ANN learned the specific task. 
+There are a number of experiments that may remedy deficiencies in the work that has been done. These experiments are described in this section.
 
-Giant part of future work will be collecting validation data, quantifying the limits of detection for various datasets/problems, and possibly assigning confidence values for each identification. Confidence values would be very hard for a neural network (haven't seen it done, seen some things that point to it being a hard problem). A lot of people ask about confidence though, so it's a worthwhile endeavor.  
+\section{Proposed Datasets}
 
-I need a more rigorous early stopping criteria. Need to look into that. Right now it works and has some justification, but it's not as pretty as I want it to be. May need to consult an expert in ECE or something.
+\subsection{Unknown Source Interdiction}
 
+One important problem in gamma-ray spectroscopy is identifying unknown hidden sources. 
 
-\section{Introduction}
+\subsection{Uranium Enrichment Calculations}
 
-The aim of this experiment is to investigate how well an ANN can distinguish between shielded and unshielded isotopes. Traditionally this problem is difficult because shielding non-linearly attenuated gamma-rays, changing the shape of a spectrum. In some cases with enough shielding low-energy gamma-rays can be completely attenuated, removing information from a spectrum. 
+For treaty verification purposes, quickly measuring the enrichment of uranium is important. It can be argued that HPGe detectors are better suited for this task due to their higher-resolution over NaI. 
 
-Previous work using an ANN for isotope identification have been very promising.
+To test the ability for ANNs to measure uranium enrichment, 
 
 
-\section{ANN Dataset with Shielding Proposed Experiment Outline}
+\subsection{Post-Detonation Nuclear Forensic Debris Analysis}
 
-The aim of this experiment is to investigate how well an ANN can distinguish between shielded and unshielded isotopes. This problem is difficult because shielding exponentially attenuates gamma-rays with respect to energy, changing the shape of a spectrum. In some cases with enough shielding low-energy gamma-rays can be completely attenuated, removing information from a spectrum. 
 
-Because threat sources will likely be hidden by shielding, it is important to be able to identify shielded isotopes. Peak based methods may perform poorly when identifying shielded isotopes because the signal from the isotope is reduced, which makes peak-identification more difficult. In addition, shielding may eliminate low-energy photons from a spectrum, requiring the algorithm to identify an isotope from only it's higher energy components. Template matching algorithms may also have trouble here. A very large template library would be necessary to account for different thicknesses and types of shielding material. A larger template library increases an algorithm's search time and storage requirements for hand held devices.  
 
-Neural networks avoid the issues presented by other identification algorithms. 
+\section{Autoencoders}
 
-Previous work using an ANN for isotope identification have been very promising.
+While autoencoders were touched on in the uranium enrichment work, they have not been explored thoroughly. There is some evidence that the autoencoder was overtrained to the 
+A special case of denoising autoencoders will be explored for the ANSI dataset. In previous work, a single ANN had to learn to differentiate the varying background signal from the source signal. In addition to this, the ANN also had to learn gain correction. By training an autoencoder to reconstruct a background subtracted and gain corrected spectrum, the task of isotope identification is simplified for the ANN. This may result in more accurate identifications. 
 
-\subsection{Dataset construction}
+In addition to using fully connected autoencoders, it may be more effective to use a 1-D convolutional autoencoder ANN. Because gamma-ray spectra have local structure in the form of photopeaks and Compton continua, convolutional ANN structures may be able to more easily extract information from spectra than fully connected ANNs. Fully connected ANNs do not assume there is local spatial structure in a signal, so the fully connected ANN would need to learn that there is local structure. Convolutional ANNs assume there is local structure, and the extent of this structure can be changed by changing the length of the convolutional ANNs filters.
 
-In this initial study the dataset will be constructed similarly to previous datasets. There will be a total of 10$^{4}$ spectra in the training dataset, 10$^{3}$ spectra in the testing dataset, and 10$^{3}$ spectra in the validation dataset. Each spectrum will be composed of only background or  a single isotope and a background contribution. The background contribution will come from uranium daughters, thorium daughters, and potassium. The background components will be chosen based on a Gaussian distribution with a mean corresponding to expected Illinois background. The variance of this distribution is TBD. The Illinois mean is chosen because we plan on collecting real spectra in Talbot to test our results. The background count rate will be sampled based on a Gaussian distribution using a typical background mean count rate of 65 cps. The variance of this distribution is TBD. 
+Once the autoencoder is trained, the hidden layer and output layer (representing the reconstructed spectrum) will be used to train a separate ANN for isotope identification and quantification. The performance of these ANNs will be compared.
 
-Each spectrum will be composed of either a single isotope or only background. A uniform prior on each isotope (including background) will be used to construct this. Each isotope will be sampled using a degree of shielding ranging from 0cm to 5cm of steel in 0.5cm increments. The dataset will be constructed in the same way as past datasets, sampling on a count-rate basis.
+\section{Additional Simulated Detector Models}
 
-Priors on the count rates for each shielding scenario are important here. Neural networks may be somewhat sensitive to priors in the training set, and the priors should reflect expected use cases. For example, if we  are developing an ANN to identify multi-Curie sources behind shielding we may not include unshielded $\mu$Ci sources in the training set.
+Simulating addition NaI detectors using GADRAS may help the ANN generalize to different detectors. To begin this process, two 2-inch by 2-inch NaI detectors will be modeled using GADRAS and their properties will be changed (for example: crystal dimension, calibration, scattering environment). The number of different detectors modeled will be increased and the generalization performance of the ANN will be evaluated. The generalization performance can be calculated by checking the ANNs performance on spectra produced by a detector whose properties the ANN has not seen during training.  
 
-In this experiment we will attempt to use an ANN to identify various check sources behind varying amounts of shielding. Initially we will only look at single sources. Each source is between 0.1 and 10 $\mu$Ci. The sources will be measured between 6 inches and 2 feet from the detector. Beyond 2 feet the count rate may be minimal. The equation for radiation attenuation is shown in Equation \ref{attenuation_equation}, where \mu$_{material}$ is the  total attenuation coefficient for a mono-energetic gamma-ray. 
+\section{Mixture Validation Dataset}
 
-Assuming a 1 $\mu$Ci source at a distance of 1m from a NaI detector (3\% absolute efficiency)  
+A real dataset of real spectra are needed to confirm the models performance. Mixtures of laboratory isotopes can be made. Mixtures will vary by signal-to-background ratio by varying source-to-detector distance and integration time. Isotopes available are: $^{60}$Co, $^{137}$Cs, $^{133}$Ba, $^{152}$Eu, $^{22}$Na and others. % Details to come....
 
-\begin{equation} \label{attenuation_equation}
-I(x_{shield}) = I_o \exp^{-x_{shield}*\mu_{material}}
-\end{equation}
 
-\begin{equation} \label{geometric_eff}
-I(d,r) = \frac{\pi r^2}{4 \pi d^2}
-\end{equation}
+\section{Bagging}
+Each time the ANN trains, it produces slightly different identification results and performance. Bagging (bootstrap aggregating), or the process of averaging the outputs of many ANNs, can reduce the variance in the output \cite{Breiman1996}. In addition to this, bagging more accurately displays the true performance of a given ANN structure. The number of ANNs included in the bagging process will be explored.
 
-\begin{equation} \label{total_eff}
-I(x_{shield},d,r) = \frac{\pi r^2 \exp^{-x_{shield}*\mu_{material}} }{4 \pi d^2}
-\end{equation}
+\section{K-folds cross validation}
+% section is good.
+K-folds cross validation will be incorporated into the model. Cross validation is the general method of determining how well a model will generalize to novel data. K-folds cross validation does this by splitting the available data into $k$ subsets. From these, $k$-1 subsets are used to train the ANN and the remaining subset is used as the validation dataset. This process is repeated, using each subset once as the validation dataset. Typical values for $k$ are either 5 or 10. Cross validation more accurately analyze how well a give ANN structure and set of hyperparameters will perform. K-folds cross validation will be added to hyperparameter optimization. The error and hyperparameter structure will be compared for ANNs trained with no cross validation, 5-folds cross validation, and 10-folds cross validation.
 
 
+\section{Latin Hypercube Sampling for Training Set Construction}
 
+% http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.541.4867&rep=rep1&type=pdf
 
-If the results for shielded single source identification are good, this will be expanded to a multi-source case. For the priors, one choice is to use uniform priors for the count rates of each shielding case. This may be a poor choice, as it effectively trains the network to expect 
+Currently, the training set is constructed using random combinations of isotopes with random count rates. Because random sampling does not guarantee the training space is well sampled and often produces clusters, this may not be a good method to construct the training dataset. This may lead the ANN to learn a bias for random clusters in the training set. A way to reduce the chances of clusters and more uniformly sample the input space is using Latin hypercube sampling (LHS). LHS partitions each dimension of a space into N equal parts. The space is then sampled using N points, ensuring that there is only one point along each partition in each dimension.
 
-\subsection{GADRAS Input Files}
+% A picture would super help here.
 
-More of a quick note. GADRAS input files are formatted like: "Source,activity{atomic number of shielding,area density}". So for example \verb!232U,10uC{26,10}! is a 10$\mu$Ci $^{232}$U source behind 10 g/cm$^{2}$ of iron (Z=26).  Solid iron has a density of 7.87 g/cm$^{3}$. A solid iron wall with area density of 10 g/cm$^{2}$ corresponds to a wall of thickness of 1.271 cm, or approximately 0.5 inches (seen in Table \ref{Irontable}).
+To quantify how much LHS helps identification for a given data space, ANNs will be trained with an increasing number of samples. The ANNs performance on a real dataset will then be measured and compared. It is expected that at a certain number of samples the ANN performance will reach an asymptote. The number of samples may change for each data space (no shielding, shielding, uranium enrichment) depending on the complexity of the problem.
 
 
-\begin{table}[]
-\centering
-\caption{Thickness of iron and corresponding areal density for GADRAS inputs. Solid iron has a density of 7.87 g/cm$^{3}$.}
-\label{Irontable}
-\begin{tabular}{|c|c|}
-\hline
-Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
-0.5 & 10 \\ \hline
-1.0 & 20 \\ \hline
-\multicolumn{2}{c}{\vdots} \\ \hline
-4.5 & 90 \\ \hline
-5.0 & 100 \\ \hline
-\end{tabular}
-\end{table}
 
+\section{Model Confidence Using the Dropout Uncertainty Method}
 
-\begin{table}[]
-\centering
-\caption{Thickness of lead and corresponding areal density for GADRAS inputs. Solid lead has a density of 11.34 g/cm$^{3}$.}
-\label{my-label}
-\begin{tabular}{|c|c|}
-\hline
-Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
-0.5 & 5.67 \\ \hline
-1.0 & 11.3 \\ \hline
-\multicolumn{2}{c}{\vdots} \\ \hline
-4.5 & 51.0 \\ \hline
-5.0 & 56.7 \\ \hline
-\end{tabular}
-\end{table}
+We can exploit the dropout method used to regularized the ANN to get a confidence measure given a spectrum \cite{Yarin2016}. Once the ANN is trained, an unknown sample is presented to the model and the solution is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same unknown sample is then passed through the ANN and the answer recorded. This process of dropout and recording the resulting output is repeated. The variance of the outputs from this process can be used to determine the ANNs confidence in a given pattern. 
 
-\subsection{Results and Discussion}
+A few results are predicted using the ANN confidence. It is also expected that high signal-to-background measurements and isotope mixtures of a few components will have a high model confidence. It is expected that low signal-to-background measurements and mixtures of many components will have a low model confidence. Additionally, the model confidence with an isotope not included in the training set should be very low. This confidence measure may be used to reduce the false alarm rate when performing isotope identification. 
 
-Results will include a confusion matrix for each shielding scenario. There will be a confusion matrix for 0cm of steel, 0.5cm steel, ... , 5cm steel. This will inform us on what the ANN is confusing with what. The confusion matrix will be composed of 100 samples of each isotope. This will take a while to run.
+\subsection{New Training Stopping Condition}
 
-This may also be a good time to try the true-positive/false-positive confusion matrix idea for mixtures. This may line up well with the single isotope confusion matrix.
+ANNs need a condition to end training. This condition is typically when a certain allowable error in a validation dataset is reached or when the training error does not appreciably decrease over time. Previously in this work, the stopping condition has been based on the cost function the ANN is trying to decrease, the cross entropy. It may be better to stop training when a more useful metric. An example of this metric is when the maximum error in the training set reaches a certain threshold. Another metric is to stop training when the ANNs mean squared error for a validation set stops decreasing.
 
-
-
-
-
-
-
-
-
-
-
-
-\section{Dataset construction}
-
-In this initial study the dataset will be constructed similarly to previous datasets. There will be a total of 10$^{4}$ spectra in the training dataset, 10$^{3}$ spectra in the testing dataset, and 10$^{3}$ spectra in the validation dataset. Each spectrum will be composed of only background or  a single isotope and a background contribution. The background contribution will come from uranium daughters, thorium daughters, and potassium. The background components will be chosen based on a Gaussian distribution with a mean corresponding to expected Illinois background. The variance of this distribution is TBD. The Illinois mean is chosen because we plan on collecting real spectra in Talbot to test our results. The background count rate will be sampled based on a Gaussian distribution using a typical background mean count rate of 65 cps. The variance of this distribution is TBD. 
-
-Each spectrum will be composed of either a single isotope or only background. A uniform prior on each isotope (including background) will be used to construct this. Each isotope will be sampled using a degree of shielding ranging from 0cm to 5cm of steel in 0.5cm increments. The dataset will be constructed in the same way as past datasets, sampling on a count-rate basis.
-
-Priors on the count rates for each shielding scenario are important here. Neural networks may be somewhat sensitive to priors in the training set, and the priors should reflect expected use cases. For example, if we  are developing an ANN to identify multi-Curie sources behind shielding we may not include unshielded $\mu$Ci sources in the training set.
-
-In this experiment we will attempt to use an ANN to identify various check sources behind varying amounts of shielding. Initially we will only look at single sources. Each source is between 0.1 and 10 $\mu$Ci. The sources will be measured between 6 inches and 2 feet from the detector. Beyond 2 feet the count rate may be minimal. The equation for radiation attenuation is shown in Equation \ref{attenuation_equation}, where \mu$_{material}$ is the  total attenuation coefficient for a mono-energetic gamma-ray. 
-
-Assuming a 1 $\mu$Ci source at a distance of 1m from a NaI detector (3\% absolute efficiency)  
-
-\begin{equation} \label{attenuation_equation}
-I(x_{shield}) = I_o \exp^{-x_{shield}*\mu_{material}}
-\end{equation}
-
-\begin{equation} \label{geometric_eff}
-I(d,r) = \frac{\pi r^2}{4 \pi d^2}
-\end{equation}
-
-\begin{equation} \label{total_eff}
-I(x_{shield},d,r) = \frac{\pi r^2 \exp^{-x_{shield}*\mu_{material}} }{4 \pi d^2}
-\end{equation}
-
-
-
-
-If the results for shielded single source identification are good, this will be expanded to a multi-source case. For the priors, one choice is to use uniform priors for the count rates of each shielding case. This may be a poor choice, as it effectively trains the network to expect 
-
-% \section{GADRAS Input Files}
-
-% More of a quick note. GADRAS input files are formatted like: "Source,activity{atomic number of shielding,area density}". So for example \verb!232U,10uC{26,10}! is a 10$\mu$Ci $^{232}$U source behind 10 g/cm$^{2}$ of iron (Z=26).  Solid iron has a density of 7.87 g/cm$^{3}$. A solid iron wall with area density of 10 g/cm$^{2}$ corresponds to a wall of thickness of 1.271 cm, or approximately 0.5 inches (seen in Table \ref{Irontable}).
-
-
-\begin{table}[]
-\centering
-\caption{Thickness of iron and corresponding areal density for GADRAS inputs. Solid iron has a density of 7.87 g/cm$^{3}$.}
-\label{Irontable}
-\begin{tabular}{|c|c|}
-\hline
-Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
-0.5 & 10 \\ \hline
-1.0 & 20 \\ \hline
-\multicolumn{2}{c}{\vdots} \\ \hline
-4.5 & 90 \\ \hline
-5.0 & 100 \\ \hline
-\end{tabular}
-\end{table}
-
-
-\begin{table}[]
-\centering
-\caption{Thickness of lead and corresponding areal density for GADRAS inputs. Solid lead has a density of 11.34 g/cm$^{3}$.}
-\label{my-label}
-\begin{tabular}{|c|c|}
-\hline
-Thickness {[}inches{]} & Areal density {[}g/cm\textasciicircum 2{]} \\ \hline
-0.5 & 5.67 \\ \hline
-1.0 & 11.3 \\ \hline
-\multicolumn{2}{c}{\vdots} \\ \hline
-4.5 & 51.0 \\ \hline
-5.0 & 56.7 \\ \hline
-\end{tabular}
-\end{table}
-
-\section{Results and Discussion}
-
-Results will include a confusion matrix for each shielding scenario. There will be a confusion matrix for 0cm of steel, 0.5cm steel, ... , 5cm steel. This will inform us on what the ANN is confusing with what. The confusion matrix will be composed of 100 samples of each isotope. This will take a while to run.
-
-This may also be a good time to try the true-positive/false-positive confusion matrix idea for mixtures. This may line up well with the single isotope confusion matrix.
-
-
-
-\section{Real Spectra Dataset for Validation}
-
-\subsection{Source Search in a City Real Spectra Dataset}
-
-This dataset will be relatively easy to construct. Measure (in 209D) whatever button sources we have at various distances from detector (5cm, 10cm, 30cm, 50cm, 100cm, 500cm, 1m, 2m, 5m) (these distances ensure we get.
-
-\subsection{Plutonium and Uranium Enrichment Real Spectra Dataset}
-
-For the uranium enrichment problem we have depleted uranium source blocks (from the dirt pile) we can readily collect gamma-ray spectra from. We also have gamma-ray spectra from a real HEU source, the Rocky Flats Shells 1-24. This gives us a source of low enriched and high enriched uranium spectra to compare how well the algorithm can distinguish these.  
-
-\subsection{Post-Detonation Debris Analysis Real Spectra Dataset}
-
-Because it is impossible to get fresh (on the order of minutes or hours old) post-detonation debris, a surrogate spectra dataset would be needed here. There are a few ways to get a surrogate dataset for this. To to the difficulty in acquiring these data, it may be more prudent to use a simulated dataset to analyze the performance for this task.
-
-
-%%%%%% v v v v v v    HOLY SHIT DO THIS    v v v v v %%%%%%%%%% 
-
-For post-detonation debris analysis, we will have some prior information on the possible isotopic composition of the debris. Using this information in a neural network would be make it work well. Using uniform combinations is a terrible idea, and I can demonstrate this. Using a custom 'debris cocktail' of whatever cocktail of radioisotopes I have, 
-
-
-%%%%%% ^ ^ ^ ^ ^ ^    HOLY SHIT DO THIS    ^ ^ ^ ^ ^ %%%%%%%%%% 
-
-
-\section{Extend the same ANN method to LaBr and CsI}
-   
-Extend the algorithm to CsI (D3S detectors) and LaBr. This would cause a stir in the field. Or at least get some interesting attention. 
-
-Once the datasets have been defined for NaI, using the ANN method outlined before, extending the algorithm to other detection materials should be trivial. The simulation software GADRAS can readily simulate parent spectra of other materials. Furthermore, the spectra sampling method is appropriate for other materials because it makes no assumptions .  
-
-\section{Model Robustness Analysis}
-
-I like my models like I like my coffee. Robust.
-
-The ANN training method seems to work okay, but the evidence for this are anecdotal. There's a better way to prove what I'm doing isn't broken.
-
-\subsection{Fooling the Model}
-
-    ANNs typically can be fooled by using adversarial examples. An adversarial example is  
-    
-    Examples include adding increasing amounts of Gaussian noise to all channels, 
-
-
-% Things indented are things I \really\ want to do slash are things that I think would be hard to argue against 
-
-\subsection{Prove the 60 Samples Argument}
-
-    
-
-    Prove the 60 samples argument works for each dataset. IE Run 500 samples, show that from any 60 randomly chosen samples we get a final test error within x\% of the local optimum found in the 500 samples. Number of samples subject to change. Or do math to put confidence on this. This needs to be done to verify my hyperparameter space is chosen appropriately.    
-
-\subsection{Analyze the Effect of Changing the Data Generating Distribution/Priors on ANN Performance}
-
-    Investigate the effect of changing the detector parameters (changing the data generating distribution and/or priors) on the ANNs performance. Need performance metrics to check against - confusion matrix or F1 score on a simulated or real dataset could be used here. 
-    
-    This can also be demonstrated by using our two NaI detectors for real spectra. Both detectors are slightly different, so they will produce slightly different spectra. Ideally we would have more than two devices.
-    
-\subsection{Analyze the Effect of Training Set Size on ANN Performance} 
-
-
-    Change the size of the training set for each dataset and see if there's a general 'best smallest sized' training set.
-    
-    
-
-
-Show  that  without  regularization  we  overfit  hardcore  with a deep network (at extreme of random bounds 5 layers and 1000(?)hidden nodes)
-
-
-\section{Feature Extraction Methods as Input to an ANN}
-
-% This is super interesting. 
-
-Previous work has shown that feature extraction (peak locations and areas) using wavelets operates well using a Bayesian model for automated isotope identification. 
-
-\subsection{Autoencoder}
-
-%% HOLY SHIT THIS IS INTERESTING
-
-An autoencoder can be applied to our problem in two interesting ways. In the first way, the autoencoder input and output are the gamma-ray spectrum. Once trained, the intermediate layer can be used as a learned dimensionality reduction that can then be used as input to the regression ANN. This can be compared to other dimensionality reduction algorithms like PCA, non-linear PCA, and multiclass LDA. The ANN performance (precision, recall, F1 score) can be compared between these methods on different datasets to determine if they should be pursued over using the full gamma-ray spectrum for different tasks.
-
-Another fun implementation for an autoencoder is using the input to be randomly gain-shifted spectra and the output to be 'perfectly calibrated' spectra. Perfect calibration will correspond to a spectrum with the 1$^{st}$ channel being 0 MeV and the 1024$^{th}$ channel being 3 MeV.  The random gain-shift can be based on a temperature shift of +/-20 C. This range should also cover uncalibrated detectors. The intermediate layer can then be used as input to a regression ANN as described above. This may be a better method of incorporating gain-invariance. Currently the ANN learns the gain changes, important features, and the calculation for the count fractions. It may make more sense for the autoencoder to find common features for the gain changes.
-
-An autoencoder can also be used for shielded spectra. Input shielded spectra, output non-shielded spectra. If the autoencoder learned something useful for the shielded case, it should perform better than an autoencoder with an input/output being the shielded spectrum.
-
-
-
-
-Comparing how different autoencoders learn based on their input/output would be suuuuuper cool. Investigation will start on CVT2017.
-
-
-
-
-
-
-%\subsection{Source Search in a City}
-
-%For the task of a source search in a city, the training dataset will be created to meet the specifications under the ANSI Standard 42.34-2006 for gamma-ray RIIDs. The dataset will be composed of 29 gamma-ray producing isotopes from the ANSI standard as well as the 3 major background isotopes (background $^{40}$K and daughters from uranium and thorium). The ANSI standard contains SNM, medical sources, and other benign sources of interest. 
 
 
 \chapter{Conclusion}
+
+Previous work has shown that ANNs are capable of solving problems in gamma-ray spectroscopy. Investigating more advanced ANN methods and proposed datasets may improve on previously reported performance.
+
+
+
+
+
 
 
 \bibliographystyle{IEEEtran} % Dunno what format they want this!!! -MK 9/19/16
