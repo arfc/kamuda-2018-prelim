@@ -1,4 +1,5 @@
-\documentclass[thesis,tocnosub,noragright,centerchapter,12pt,fullpage]{uiucecethesis09}
+\documentclass[tocnosub,noragright,centerchapter,12pt,fullpage]{uiucecethesis09}
+
 
 % Use draftthesis for notes and date markings on every page.  Useful when you
 %   have multiple copies floating around.
@@ -36,7 +37,6 @@
 \usepackage{lscape}  % Useful for wide tables or figures.
 \usepackage[justification=raggedright]{caption}	% makes captions ragged right - thanks to Bryce Lobdell
 
-
 \DeclareMathOperator*{\argminA}{arg\,min} % Jan Hlavacek
 
 % Uncomment the appropriate one of the following four lines:
@@ -45,7 +45,7 @@
 %\otherdoctorate[abbrev]{Title of Degree}
 %\othermasters[abbrev]{Title of Degree}
 
-\title{Automated Isotope Identification Algorithm Using Artificial Neural Networks}
+\title{Automated Isotope Identification Using Artificial Neural Networks}
 \author{Mark Kamuda}
 \department{Nuclear Plasma and Radiological Engineering}
 %\department{\mbox{Nuclear, Plasma, and Radiological Engineering}}
@@ -62,7 +62,6 @@
 \committee{Professor Kathryn Huff, Adviser\\
         Professor Rizwan Uddin\\
         Professor Tomasz Kozlowski\\
-        Professor Mark Hasagawa-Johnson\\
         Professor Clair Sullivan}
 
 
@@ -139,17 +138,22 @@ Another case where knowing the isotope quantities in a mixture of isotopes is in
 
 \section{Gamma-Ray Spectroscopy for Isotope Identification}
 
-There are a number of difficult things associated with performing isotope identification. Traditionally, isotope identification is conducted by a trained spectroscopoist. Once a spectrum of interest is identified,  a spectroscopist will identify photopeaks \cite{Sullivan2010}. 
+Traditionally, isotope identification is conducted by a trained spectroscopist. Rawool-Sullivan et al. identified a common workflow performed by a group of gamma-ray spectroscopists \cite{Sullivan2010}. This workflow included discriminating background and source photopeaks, adjusting the calibration using background photopeaks and checking for shielding effects in the low-energy photopeaks. Once photopeaks are identified, the spectroscopist would use their prior knowledge of isotope emissions (or consult a database of these emissions) to match isotopes to the spectrum. The researchers also noted that while  spectroscopists used this book knowledge, they often would use intuition developed from analyzing tens or hundreds of gamma-ray spectrum. The researchers also noted the difficulty in incorporating this subjective analysis into an automated algorithm.
+% This is one of the main arguments for using ANNs in automated isotope ID
+
 
 There are many automated radioisotope identification methods available, but few perform well given a low-resolution gamma-ray spectrum of a mixture of radioisotopes. Common methods include library comparison algorithms, region of interest (ROI) algorithms, principle component analysis (PCA), and template matching.
 
 Library comparison algorithms attempt to match photopeak energies found in a gamma-ray spectrum with those found in a library of known isotope decay energies. Drifts and uncertainties in detector calibration can lead to misidentifying photopeaks, leading to incorrect isotope identifications \cite{burr2009}. To be automated, this method needs an algorithm to extract photopeak centroids from a spectrum. Photopeak extraction algorithms face difficulties when a large number of photopeaks overlap in a spectrum, such as when a mixture of radio-isotopes are measured with a low-resolution detector \cite{xiong2015}.
 
-ROI algorithms search for elevated counts compared to background in a region where photopeaks are expected to be for different radioisotopes. ROI algorithms may also operate poorly when photopeaks of different radioisotopes overlap \cite{burr2009}. For this reason, large isotope libraries will preform poorly using this method. Similarly to the library comparison algorithm, calibration drift may shift photopeaks into different neighboring ROIs, leading to incorrect identification. The ROI method has been used to differentiate normally occuring radioactive material (NORM) from special nuclear material (SNM) using plastic scintillators \cite{Ely2006}.
+ROI algorithms search for elevated counts compared to background in a region where photopeaks are expected to be for different radioisotopes. ROI algorithms may also operate poorly when photopeaks of different radioisotopes overlap \cite{burr2009}. For this reason, large isotope libraries will preform poorly using this method. Similarly to the library comparison algorithm, calibration drift may shift photopeaks into different neighboring ROIs, leading to incorrect identification. The ROI method has been used to differentiate normally occurring radioactive material (NORM) from special nuclear material (SNM) using plastic scintillators \cite{Ely2006}.
 
 PCA can also be applied to radioisotope identification. The goal of PCA is to reduce the dimensionality of a dataset into uncorrelated variables \cite{Jolliffe2002}. Using a few of these principle components, the data may be represented in a reduced space that contains most of the information present in the original data. The transformed data can then be clustered based on isotope identity. Clustering algorithms may include K-means or Mahalanobis distance \cite{Kanungo2002, Kumari2012}. PCA has been applied to isotope identification using plastic scintillators \cite{Boardman2012} and anomaly detection using both plastic scintillators and NaI detectors \cite{runkle2006b}. Despite the progress of PCA in some isotope identification problems, there has not been significant progress in applying PCA to separating mixtures of isotopes in gamma-ray spectra.
 
 Template matching algorithms find an example in a database of gamma-ray spectra that most closely matches a measured spectrum \cite{burr2009}. The database of spectra can contain multiple detector calibration settings, shielding materials, and source-to-detector distances. Goodness of fit can be measured using a hypothesis test such as chi-squared test, euclidean distance, or Mahalanobis distance. While a sufficient amount of example spectra can be used to identify almost any measured spectrum, the drawback of this method is the time necessary to compare a measured spectrum to the library and the computer memory necessary to store said library. This method also may have difficulty when mixtures of isotopes are considered, although work is being done to correct this \cite{mattingly2010}.
+
+These algorithms largely incorporate book knowledge. By further incorporating the intuition identified by Rawool-Sullivan et al., these algorithms may be improved. A machine learning approach to automated gamma-ray spectroscopy may be able to marry book knowledge and a trained spectroscopists intuition.  
+
 
 
 
@@ -176,11 +180,11 @@ ANNs work by mapping arbitrary input spaces, $\mathbb{R}^N$, to arbitrary output
 	\label{fig:Node}
 \end{figure}
 
-Artificial ANNs learn a function by changing the weights connecting the layers so that some error function is minimized for a given dataset. One popular method to update the weights is through the process of gradient descent through the backpropogation of errors \cite{Rumelhart1986}. The update equation for a single weight, $w_j$, is shown in Equations \ref{eq:update1} and \ref{eq:update2}. In these equations, $Error$ is the given error function to be minimized (commonly mean squared error or cross entropy) and $\eta$ is the learning rate of the ANN.
+Artificial ANNs learn a function by changing the weights connecting the layers so that some error function is minimized for a given dataset. One popular method to update the weights is through the process of gradient descent through the backpropogation of errors \cite{Rumelhart1986}. The update equation for a single weight, $w_j$, is shown in Equations \ref{eq:update1} and \ref{eq:update2}. In these equations, $E$ is the given error function to be minimized (commonly mean squared error or cross entropy) and $\eta$ is the learning rate of the ANN.
 
 
 \begin{equation} \label{eq:update1}
-\Delta w_{j} = - \eta \frac{dError}{dw_j}
+\Delta w_{j} = - \eta \frac{dE}{dw_j}
 \end{equation}
 
 \begin{equation} \label{eq:update2}
@@ -193,7 +197,7 @@ In general, ANNs have a tendency to memorize their training set in a process cal
 
 
 
-\section{Isotope Identification Using ANNs}
+\section{Automated Isotope Identification Using ANNs}
 
 There have been a number of published papers which apply ANNs to automated isotope identification. ANNs have been applied to peak fitting \cite{Abdel-Aal2002}, isotope identification \cite{Abdel-Aal1996, Medhat2012}, and activity estimation \cite{Abdel-Aal1996, Vigneron1996}. Many of this work rely on ROI methods \cite{Pilato1999}, feature extraction \cite{Chen2009}, high-resolution gamma-ray spectra as the input to the ANN \cite{Yoshida2002}, small libraries of isotopes, and assume perfectly calibrated detectors. ANN training methods created for high-resolution gamma-ray spectra may not perform well when trained using low-resolution spectra given the large discrepancy in resolution. ANN training that relies on ROI methods may not perform well when ROIs overlap significantly with large libraries of isotopes.
 
@@ -343,7 +347,7 @@ One important problem in automated gamma-ray spectroscopy giving untrained opera
 
 Typically these sources produce weak signals due to being purposely shielded. Because lower-energy gamma-rays are preferentially attenuated over higher-energy gamma-rays, shielding also changes the shape of a gamma-ray spectrum. 
 
-In addition to the previous hurdles, because untrained operators would be using these algorithms, the detector calibration cannot be completely trusted. 
+In addition to the previous hurdles, because untrained operators would be using these algorithms, the detector calibration cannot be completely trusted. To address this, 
 
 To address the problems described above, the training dataset will be constructed of simulated spectra of 
 
@@ -391,24 +395,28 @@ Simulating addition NaI detectors using GADRAS may help the ANN generalize to di
 
 A real dataset of real spectra are needed to confirm the models performance. Mixtures of laboratory isotopes can be made. Mixtures will vary by signal-to-background ratio by varying source-to-detector distance and integration time. Isotopes available are: $^{60}$Co, $^{137}$Cs, $^{133}$Ba, $^{152}$Eu, $^{22}$Na and others. % Details to come....
 
-
-\section{Bagging}
-Each time the ANN trains, it produces slightly different identification results and performance. Bagging (bootstrap aggregating), or the process of averaging the outputs of many ANNs, can reduce the variance in the output \cite{Breiman1996}. In addition to this, bagging more accurately displays the true performance of a given ANN structure. The number of ANNs included in the bagging process will be explored.
-
-\section{K-folds cross validation}
+\section{K-folds Cross Validation}
 % section is good.
 K-folds cross validation will be incorporated into the model. Cross validation is the general method of determining how well a model will generalize to novel data. K-folds cross validation does this by splitting the available data into $k$ subsets. From these, $k$-1 subsets are used to train the ANN and the remaining subset is used as the validation dataset. This process is repeated, using each subset once as the validation dataset. Typical values for $k$ are either 5 or 10. Cross validation more accurately analyze how well a give ANN structure and set of hyperparameters will perform. K-folds cross validation will be added to hyperparameter optimization. The error and hyperparameter structure will be compared for ANNs trained with no cross validation, 5-folds cross validation, and 10-folds cross validation.
+
+\section{Bagging}
+% section is good.
+Each time the ANN trains, it produces slightly different identification results and performance. Bagging (bootstrap aggregating), or the process of averaging the outputs of many ANNs, can reduce the variance in the output \cite{Breiman1996}. In addition to this, bagging more accurately displays the true performance of a given ANN structure.
+
+Analyzing the performance of bagging begins once the ANN structure is found from the random hyperparameter search. Using this structure, twenty-five models will be trained. Each model will use a training set composed of $N$ samples sampled with replacement from the available data. The accuracy and variance in the output as more models are averaged will be discussed. The accuracy and variance are expected to plateau with enough models being averaged. If the accuracy or variance do not plateau after 25 models, additional will be created until the effect is observed
+
+% future future work can explore boosting with these ANNs or weak learners. Could be very interesting. Also, weak learning models can be made tiny, possibly improving run-time without sacrificing (or even improving on) performance. 
 
 
 \section{Latin Hypercube Sampling for Training Set Construction}
 
 % http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.541.4867&rep=rep1&type=pdf
 
-Currently, the training set is constructed using random combinations of isotopes with random count rates. Because random sampling does not guarantee the training space is well sampled and often produces clusters, this may not be a good method to construct the training dataset. This may lead the ANN to learn a bias for random clusters in the training set. A way to reduce the chances of clusters and more uniformly sample the input space is using Latin hypercube sampling (LHS). LHS partitions each dimension of a space into N equal parts. The space is then sampled using N points, ensuring that there is only one point along each partition in each dimension.
+Currently, each training set is constructed using random combinations of isotopes with random count rates. Random sampling does not guarantee the training space is evenly sampled and often produces clusters. This may lead the ANN to learn a bias for random clusters in the training set. A way to reduce the chances of clusters and more uniformly sample the input space is using Latin hypercube sampling (LHS). LHS partitions each dimension of a space into N equal parts. The space is then sampled using N points, ensuring that there is only one point along each partition in each dimension. 
 
 % A picture would super help here.
 
-To quantify how much LHS helps identification for a given data space, ANNs will be trained with an increasing number of samples. The ANNs performance on a real dataset will then be measured and compared. It is expected that at a certain number of samples the ANN performance will reach an asymptote. The number of samples may change for each data space (no shielding, shielding, uranium enrichment) depending on the complexity of the problem.
+To quantify how much LHS helps identification for a given data space, ANNs will be trained with an increasing number of samples. The ANNs performance on a real dataset will then be measured and compared. It is expected that at a certain number of samples the ANN performance will reach an asymptote.
 
 
 
