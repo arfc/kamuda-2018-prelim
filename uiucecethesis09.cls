@@ -116,7 +116,7 @@
     }
 \newcommand{\othermasters}[2]{\def\@degree{#1}
     \def\degree{#2}
-    \def\@thesisname{PRELIMINARY EXAM}
+    \def\@thesisname{PRELIMINARY EXAMINATION}
     \@doctoralfalse
     }
 \newcommand\phdthesis{\otherdoctorate{Doctor of Philosophy}{Ph.D.}
