@@ -301,18 +301,27 @@ Another method to reduce model capacity is neuron dropout. Neuron dropout is the
 
 \section{Key Results}
 
-Two key results are described in the following section. The first result demonstrates the ANNs ability to correctly identify isotopes in the ANSI library with an unknown calibration.  The second result demonstrates the ANNs ability to identify if an isotope that is shielded by lead.  
+Two key results are described in the following section. The first result demonstrates the ANNs ability to correctly identify isotopes in the ANSI N42$-$34$-$2006 library with an unknown calibration. This demonstration also demonstrates how well the ANN operates when spectroscopic features such as photopeaks are unclear. The second result demonstrates the ANNs ability to identify if an isotope that is shielded by lead.  
+
+\subsection{Single Isotope Identification}
+
+The isotope library chosen for this demonstration was 29 gamma-ray producing isotopes from the ANSI N42.34$-$2006 standard, as well as $^{152}$Eu \cite{ANSI}. The reason for including will be described in a later section. because it is available in our lab. Based on lab observations using an Ortec 905$-$3 NaI spectrometer, the average background count rate was set at 85 counts per second (cps). Each spectrum in the training set had a maximum of 5 different non$-$background isotopes included in the spectrum. Each isotope had a count rate which was logarithmically distributed between 10 and 1000 cps. The exposure time was logarithmically distributed between 10 and 2000 seconds. Each non$-$background isotope had an equal probability of being included in each spectrum. The counts from background were distributed uniformly between background thorium, background uranium, and background $^{40}$K. To mimic calibration shift, the channels in each spectrum were linearly rebinned. The magnitude of each shift was uniformly chosen between a +/$-$ 25\% calibration drift. The 0\% gain shift setting corresponds to a detector with a maximum bin energy of 3 MeV. A calibration drift of +/$-$ 25\% is an extreme case of incorrect calibration.
+
+To demonstrate the performance of the algorithm on spectra with single isotopes where features were easily identifiable by eye versus spectra without obvious visible features, two simulated validation datasets were considered. Both datasets consisted of spectra with a single isotope simulated using the same process as the ANN training set with the rebinning randomly chosen between +/$-$20\%. The rebinning magnitude was reduced to avoid testing the ANN near the edge of it's training. A calibration drift of +/$-$20\% is still an extreme incorrect calibration. A confusion matrix was used to compare the performance of the ANN on both datasets. For all the results, the count contribution cutoff was arbitrarily set at 15\% of the largest count contribution calculated by the ANN.
 
 
-To demonstrate gain invariance, 
+For spectra in the first validation dataset, both the source and background contributed 85 counts per second with an integration time of 60 seconds. Each isotope in the training library was simulated one hundred times with this count distribution. Simulated $^{60}$Co spectra with the extreme calibration settings are shown in Figure \ref{fig:co60_diff_pmt_60s}.
+
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\linewidth]{images/Co60_both_60s}
-\caption{Two simulated $^{60}$Co spectra. In each spectrum, the $^{60}$Co and background contribute 5100 counts to the spectrum. The bottom spectrum's gain was offset by -20\% while the top spectrum's gain was offset by +20\%.}
+\caption{Two simulated $^{60}$Co spectra. In each spectrum, the $^{60}$Co and background contribute 5100 counts to the spectrum. The bottom spectrum's gain was offset by $-$20\% while the top spectrum's gain was offset by +20\%.}
 \label{fig:co60_diff_pmt_60s}
 \end{figure}
+
+The confusion matrix generated using an ANN is displayed in Figure \ref{fig:conf_matrix_60s}. In this confusion matrix, the largest count contributing isotope was used to identify the spectrum. The ANN exhibited a low false positive rate with this simulated dataset. False positives occurred mainly with sources that primarily emit only a few low-energy photons. This is especially notable when $^{99m}$Tc, which primarily emits a 141 keV gamma-ray, is misidentified as $^{57}$Co, which emits a 122 keV gamma-ray. A $-$13\% calibration shifted  $^{99m}$Tc spectrum looks almost identical to a $^{57}$Co spectrum without a calibration shift. Incorrect identification occurred due to the proximity of the photopeaks of these isotopes. Incorrect identification also occurred due to a lack of other prominent spectral features such as the Compton continuum for low-energy gamma-rays. This effect can also be seen in Figure \ref{fig:conf_matrix_60s} when $^{204}$Tl is misidentified as $^{201}$Tl. Both $^{204}$Tl and $^{201}$Tl primarily emit photons around 70 and 80 keV.
 
 
 
@@ -324,16 +333,16 @@ To demonstrate gain invariance,
 \label{fig:conf_matrix_60s}
 \end{figure}
 
-
+In the second validation dataset, the source and background were measured for 10 seconds and the source count rate was reduced to half the strength of background. Example simulated $^{60}$Co spectra with the extreme calibration settings are shown in Figure \ref{fig:co60_diff_pmt_10s}. Note that compared to figure \ref{fig:co60_diff_pmt_60s}, the photopeaks of $^{60}$Co are more difficult to identify by eye. The lack of clear spectral features in these spectra may present extra difficulty to algorithms that rely solely on feature extraction methods. Also, the lack of prominent background peaks would make these spectra difficult to calibrate.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\linewidth]{images/Co60_both_10s}
-\caption{Two simulated $^{60}$Co spectra. In each spectrum, the $^{60}$Co source contributes 425 counts and background contribute 850 counts. The red spectrum's gain is offset by -20\%, while the blue spectrum's gain is offset by +20\%.}
+\caption{Two simulated $^{60}$Co spectra. In each spectrum, the $^{60}$Co source contributes 425 counts and background contribute 850 counts. The red spectrum's gain is offset by $-$20\%, while the blue spectrum's gain is offset by +20\%.}
 \label{fig:co60_diff_pmt_10s}
 \end{figure}
 
-
+The confusion matrix for this dataset is shown in Figure \ref{fig:conf_matrix_10s}. Note that the false positive rate increases, but often there was enough information in each spectrum to correctly identify the isotope. This implies that the ANN trained in this way can be effective in non-ideal measurement situations (low count rate source, short measurement time, incorrectly calibrated detector).
 
 \begin{figure}[H]
 \centering
@@ -342,8 +351,9 @@ To demonstrate gain invariance,
 \label{fig:conf_matrix_10s}
 \end{figure}
 
+\subsection{Identifying Bare and Shielded $^{152}$Eu}
 
-An ANN was trained to identify bare and shielded isotopes. The ANN used a training library composed of bare and shielded sources from the ANSI library. 
+An ANN was trained to identify bare and shielded isotopes. The ANN used a training library composed of bare and shielded sources from the ANSI N42$-$34$-$2006 library. The $^{152}$Eu isotope emits a wide range of gamma-rays.
 
 \begin{figure}[H]
 \centering
@@ -516,7 +526,7 @@ We can exploit the dropout method used to regularized the ANN to get a confidenc
 
 A few results are predicted using the ANN confidence. It is also expected that high signal$-$to$-$background measurements and isotope mixtures of a few components will have a high model confidence. It is expected that low signal$-$to$-$background measurements and mixtures of many components will have a low model confidence. Additionally, the model confidence with an isotope not included in the training set should be very low. This confidence measure may be used to reduce the false alarm rate when performing isotope identification. 
 
-\subsection{New Training Stopping Condition}
+\section{New Training Stopping Condition}
 
 ANNs need a condition to end training. This condition is typically when a certain allowable error in a validation dataset is reached or when the training error does not appreciably decrease over time. Previously in this work, the stopping condition has been based on the cost function the ANN is trying to decrease, the cross entropy. It may be better to stop training when a more useful metric. An example of this metric is when the maximum error in the training set reaches a certain threshold. Another metric is to stop training when the ANNs mean squared error for a validation set stops decreasing.
 
@@ -532,7 +542,7 @@ Previous work has shown that ANNs are capable of solving problems in gamma$-$ray
 
 
 
-\bibliographystyle{IEEEtran} % Dunno what format they want this!!! -MK 9/19/16
+\bibliographystyle{IEEEtran} 
 \bibliography{refs.bib}
 
 \end{document}
