@@ -83,14 +83,10 @@
 \chapter{Literature Review}
 
 
-\section{Scintillation Detector Physics}
-
-
-
 
 \section{Isotope Identification}
 
-
+Automated isotope identification is difficult. 
 
 
 \section{Isotope Identification Using ANNs}
@@ -100,10 +96,26 @@
 
 \section{Identification Tasks}
 
-\subsection{Source Search in a City}
+\subsection{ANSI Standard - Without shielding}
+
+Identify single isotopes and isotopes mixtures. Looking at low count time spectra, 10 seconds to an hour collection times. Source strengths range from $\mu$curie to curie source. This corresponds to orphan source strengths and SNM source strengths. 
 
 
-\subsection{Plutonium and Uranium Enrichment Measurements}
+
+\subsection{ANSI Standard - With shielding}
+
+Shielding presents a unique problem. The signal from a shielded source is reduced, with the lower energy photopeaks being effected greater than higher energy photopeaks. 
+
+\subsubsection{Previous results}
+
+Previous work showing it can be done.
+
+\subsubsection{Validation Dataset}
+
+Collect lots of data behind various amounts of shielding with different materials. 
+
+
+\subsection{Uranium Enrichment Measurements}
 
 
 
@@ -125,6 +137,8 @@
 
 
 \subsection{Post-Detonation Debris Analysis}
+
+In theory, can we do perform post-detoation debris analysis with NaI using a neural network?  
 
 
 \chapter{Previous Work}
@@ -153,6 +167,12 @@
 
 
 \section{Introduction}
+
+
+\section{ANNs to Explore}
+
+For each ANN find the theoretical best performance. Theoretical best performance is defined as the 
+
 
 
 \section{Find appropriate Hyperparameter Bounds to Prove the 60 Samples Argument}
