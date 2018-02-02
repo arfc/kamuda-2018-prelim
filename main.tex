@@ -441,9 +441,21 @@ $^{60}$Co  & 0.074                                                         \\ \h
 
 \chapter{Future Work and Proposed Experiments}
 
-For the proposed work, there are a number of experiments that will build on the work that has been done. These experiments are described in this section.
+For the proposed work, there are a number of experiments that will explore applying ANNs to gamma$-$ray spectroscopy. An outline of this work can be seen in Figure \ref{fig:ANN_workflow}. Section \ref{ProposedDatasets} details three proposed simulated gamma$-$ray spectra datasets. Arguments are given for why these datasets represent important problems in gamma$-$ray spectroscopy. In addition to ANNs that use the full spectrum as input, ANNs that are trained to perform feature extraction will also be considered. Section \ref{Autoencoders} describes how autoencoders can be trained to extract key features from a gamma$-$ray spectrum. Section \ref{CrossValidation} describes the how the random hyperparameter search will be performed using K$-$folds cross validation. Once an appropriate ANN is found, a method called bagging (bootstrap aggregating) will be used to construct an ensemble of ANNs. Bagging is described in Section \ref{Bagging}. Finally, the ANN performance on each datasets will be evaluated. Performance metrics are based on the ANN error in testing datasets, described in section \ref{ProposedDatasets}, and ANN confidence, described in \ref{ModelConfidence}. 
 
-\section{Proposed Datasets}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{images/ANN_workflow}
+\caption{Workflow for the experiments proposed in this work.}
+\label{fig:ANN_workflow}
+\end{figure}
+
+
+
+\section{Proposed Datasets} \label{ProposedDatasets}
 
 The proposed datasets represent important problems in automated gamma-ray spectroscopy. These include unknown source interdiction, uranium enrichment calculations, and post$-$detonation nuclear forensics 
 
@@ -500,33 +512,29 @@ will be simulated and their mean ANN output, variances, and the ANN confidence w
 
 Measuring the enrichment of uranium is important for treaty verification purposes. These measurements are performed in uranium enrichment facilities and to verify warhead disarmament. Due to treaty conditions limiting the amount of sensitive information released to inspectors, information barriers are required. Information barriers can include removing regions in gamma-ray spectra or giving no information about shielding between the source and detector. 
 
-ANNs are a good candidate as an information barrier for three reasons. First, their output can be constrained, only outputting the enrichment given a gamma-ray spectrum. Restricting the output ensures other details of the sample cannot be known. Second, ANNs can be trained to use spectra with unknown background radiation and calibration drift. . Finally, the confidence in the ANNs predictions can be calculated. Low confidence predictions could indicate a hoax object has been measured. Despite these reasons, a few technical hurdles need to be addressed when constructing an ANN to perform uranium enrichment. These hurdles and methods to address them are described below.
+ANNs are a good candidate as an information barrier for three reasons. First, their output can be constrained, only outputting the enrichment given a gamma-ray spectrum. Restricting the output ensures potentially sensitive details of the sample are not known. Second, ANNs can be trained to use spectra with unknown background radiation and calibration drift. Because the inspector will have a time constraint, it is assumed a separate background spectrum will not be taken. A background spectrum can be subtracted from a background and source spectrum, making analysis easier. ANNs can be taught to operate in areas with different background radiation. The other unknown, possible calibration drift, is typically corrected manually. Because the inspector will not have access to the spectrum, manual calibration adjustments cannot be performed. It has been shown that ANNs can be taught to identify isotopes in detectors with different calibration. Finally, the ANNs confidence in its predictions can be calculated. Low confidence predictions could indicate a hoax object has been measured. A few technical hurdles need to be addressed when constructing an ANN to perform uranium enrichment. These hurdles and methods to address them are described below.
 
-Fortunately, the isotope library for uranium enrichment consists of only AHH isotopes. These are the main gamma$-$ray producing isotopes in a sample of uranium. 
+Because uranium emits relatively low energy gamma$-$rays, it's spectrum is especially susceptible to corruption by shielding. To address this, a shielding library will be included in the dataset simulation. This will be constructed using the same method described in section \ref{UnknownSourceInterdiction} using the material thicknesses shown in Table \ref{table:Shielding_to_include}.
 
-Because uranium emits relatively low energy gamma$-$rays, it's spectrum is especially susceptible to corruption by shielding. To address this, a shielding library will be included in the dataset simulation. This will be constructed using the same method described in section \ref{UnknownSourceInterdiction}.
+Treaty verification inspectors typically have under an hour to collect data for an enrichment measurement. For this reason source measurement times will range from 5 mins to 1 hr. Collection times shorter than 5 mins may produce ANNs with low confidence and high variance outputs. To demonstrate the ANNs performance versus collection time, a graph of the measurement time versus ANN accuracy and confidence on a simulated verification dataset will be included. It is expected that collecting times less than 10 mins will result in an ANN accuracy too low to be of practical use. For reference, Analytically chemical techniques can measure uranium enrichment to 0.1$-$0.2\% accuracy \cite{Pandas_Ch7_1991}. Comparing the areas of photopeaks in HPGe spectra, an accuracy of about 1\% is possible \cite{Pandas_Ch7_1991}. Also due to the time constraint, it is assumed that background data cannot be collected. To address this, each training sample will include a random combination of background isotopes. The background count rate will range from 10$-$120 cps.
 
-Treaty verification inspectors typically have under an hour to collect data for an enrichment measurement. For this reason source measurement times will range from 5 mins to 1 hr. Times shorter than 5 mins are unrealistic. To demonstrate the ANNs performance versus collection time, a graph of the measurement time versus ANN accuracy and confidence on a simulated verification dataset will be included. It is expected that collecting times less than 10 mins will result in an ANN accuracy too low to be of practical use. For reference, Analytically chemical techniques can measure uranium enrichment to 0.1$-$0.2\% accuracy \cite{Pandas_Ch7_1991}. Comparing the areas of photopeaks in HPGe spectra, an accuracy of about 1\% is possible \cite{Pandas_Ch7_1991}. 
-
-Given the time constraint, it is assumed that background data cannot be collected. 
 
 Because trained inspectors are performing these measurements, large calibration drifts are not included in the training data. Small calibration drifts of less than 5\% will be included to account for temperature changes and electronic drift.
 
-
-
-Currently, each training set is constructed using random combinations of isotopes with random count rates. Random sampling does not guarantee the training space is evenly sampled and often produces clusters. This may lead the ANN to learn a bias for random clusters in the training set. A way to reduce the chances of clusters and more uniformly sample the input space is using Latin hypercube sampling (LHS). LHS partitions each dimension of a space into N equal parts. The space is then sampled using N points, ensuring that there is only one point along each partition in each dimension. An example of this sampling method for a two-dimension space is shown in Figure \ref{fig:LHS_example}.
+The isotope library necessary for uranium enrichment consists of only six isotopes: $^{235}$U, $^{238}$U, $^{234}$U, $^{234}$Th, $^{231}$Th, and $^{234m}$Pa. These are the main gamma$-$ray producing isotopes in a sample of uranium. The training set will be simulated using combinations of all of these isotopes in pseudo$-$random combinations. Random sampling does not guarantee the training space is evenly sampled and often produces clusters. The presence of clusters in the training set may lead the ANN to learn a bias for certain combinations of isotopes. A way to reduce the chances of clusters and more uniformly sample the input space is using Latin hypercube sampling (LHS). LHS partitions each dimension of a space into N equal parts. The space is then sampled using N points, ensuring that there is only one point along each partition in each dimension. An example of this sampling method for a two-dimension space is shown in Figure \ref{fig:LHS_example}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\linewidth]{images/LHS_example}
+\includegraphics[width=0.4\linewidth]{images/LHS_example}
 \caption{An example of LHS sampling. Seen here is a square sampled using five points.}
 \label{fig:LHS_example}
 \end{figure}
 
-To quantify how much LHS helps identification, ANNs will be trained with an increasing number of samples. The different ANNs performance on a simulated validation dataset will then be measured and compared. It is expected that at a certain number of samples the ANN performance will reach an asymptote. This analysis will also be performed using a training set composed of random isotope combinations. The error on the validation set between the LHS and random sampled training sets will be compared.  
+To quantify how much LHS helps identification, datasets will be constructed using random sampling and LHS. The number of samples in each dataset will be 1k, 5k, 10k, 50k, 100k. ANNs will be trained using these datasets and their  performance on a simulated validation dataset will then be measured and compared. It is expected that at a certain number of samples the ANN performance will reach an asymptote. It is also expected that the LHS datasets will reach a higher$-$accuracy asymptote quicker than the randomly sampled datasets. 
 
 
-To test the ability for ANNs to measure uranium enrichment, 
+To test the ability for ANNs to measure uranium enrichment, depleted, low$-$enriched, medium$-$enriched, and high$-$enriched uranium spectra will be simulated. for each enrichment level, 100 spectra will be simulated using collection times of 5, 10, 60, 300, 600, 1800, and 3600 s. Each of these spectra will contain an unknown background and calibration similar to the training set. Separate validation sets will be constructed for a small amount of shielding (0.1 cm of lead) and a large amount of shielding Shielding (1 cm of lead). 
+
 % http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.541.4867&rep=rep1&type=pdf
 
 
@@ -534,56 +542,102 @@ To test the ability for ANNs to measure uranium enrichment,
 
 Immediately after a nuclear detonation, first responders may be collecting a large number of gamma$-$ray spectra using handheld low$-$resolution detectors. These detectors may have an unknown or poor calibration and each spectrum may be measured for a short amount of time. Despite these drawbacks, the data is still valuable because it can potentially be used to determine isotopics of the debris generated by the explosion \cite{Moody}. Due to the complicated gamma$-$ray spectrum produced by a large number of radioactive fission products, many photopeaks and spectral features will overlap in a spectrum. This feature overlap increases the difficulty of and slows photopeak analysis, especially for low$-$resolution spectrometers. 
 
+
 A real dataset of real spectra are needed to confirm the models performance. Mixtures of laboratory isotopes can be made. Mixtures will vary by signal$-$to$-$background ratio by varying source$-$to$-$detector distance and integration time. Isotopes available are: $^{60}$Co, $^{137}$Cs, $^{133}$Ba, $^{152}$Eu, $^{22}$Na and others. % Details to come....
 
 One important question is how many combinations to include in the training set. To address this, datasets will be created including single isotope spectra, a max of 5 isotope spectra, and a max of 10 isotope spectra. ANNs will be trained with increasing number of examples (1k, 5k, 10k, 50k, 100k). The performance of these ANNs will be compared by observing how the 
 
+\subsection{Additional Simulated Detector Models}
+
+Simulating addition NaI detectors using GADRAS may help the ANN generalize to different detectors. To begin this process, two 2$-$inch by 2$-$inch NaI detectors will be modeled using GADRAS and their properties will be changed. These changes will include changing the calibration and changing the shape of the photopeaks. The calibration changes will be based on laboratory NaI detectors. The shape of photopeaks will be changed based on laboratory NaI detectors' full$-$width$-$at$-$half$-$max (FWHM). Ten different models will be included. 
+
+Initial hyperparameter searches will be based on datasets simulated using a single detector. After an optimal ANN structure is found using the hyperparameter search, two new training datasets will be constructed with additional detector models. The two datasets will be constructed from five models and ten models. Two ANNs will be trained using both datasets. The performance of the ANNs on a dataset constructed using five new detector models will be reported. It is expected that the ANN trained using more detector models will have a higher accuracy on the new testing dataset. 
 
 
-\section{Autoencoders}
+\section{Autoencoders} \label{Autoencoders}
 
 % While autoencoders were touched on in the uranium enrichment work, they have not been explored thoroughly. There is some evidence that the autoencoder was overtrained to the A special case of denoising autoencoders will be explored for the ANSI dataset. 
 
-An autoencoder is an unsupervised ANN whose goal is to learn an encoding of the input. This is accomplished by simultaneously training an encoding ANN and a decoding ANN. The encoding ANN reduces an $n-$dimension signal to a $m-$dimension signal, where $m < n$. The decoding ANN takes the $m-$dimension signal and attempts to reproduce the $n-$dimension input or one similar.
+An autoencoder is an unsupervised ANN whose goal is to learn an encoding for the input. This is accomplished by simultaneously training an encoding ANN and a decoding ANN. An example of this can be seen in Figure \ref{fig:Autoencoder_structure}. The encoding ANN reduces an $n-$dimension signal to a $m-$dimension signal, where $m < n$. The decoding ANN takes the $m-$dimension signal and attempts to reproduce the $n-$dimension input or one similar.
 
-In previous work, a single ANN had to learn multiple tasks to identify isotopes. An ANN would have to simultaneously identify the detector calibration, background signal, and possible source signal. By training an autoencoder to reconstruct a background subtracted and correctly calibrated spectrum, the task of isotope identification is simplified for the ANN. This may result in more accurate identifications. To test this, a single autoencoder and three ANNs will be trained. The first will be trained without an autoencoder. The second will be trained using the encoder as input. The third will be trained using the full autoencoder as input. A manual search or a random hyperparameter search will be used to find an appropriately structured autoencoder. The testing and validation error for these ANNs will be compared for each dataset described previously.
+
+Without an autoencoder, a single ANN had to learn multiple tasks to identify isotopes. An ANN would have to simultaneously identify the detector calibration, background signal, and possible source signal. By training an autoencoder to reconstruct a background$-$subtracted and correctly calibrated spectrum, the task of isotope identification is simplified for the ANN. This may result in more accurate identifications. To test this, a single autoencoder and three ANNs will be trained. The first will be trained without an autoencoder. The second will be trained using the encoder as input. The third will be trained using the full autoencoder as input. A manual search or a random hyperparameter search will be used to find an appropriately structured autoencoder. The testing and validation error for these ANNs will be compared for each dataset described previously.
 
 
 % is local spatial structure too much jargon? 
 In addition to using fully connected autoencoders, a 1$-$D convolutional autoencoder will also be explored. Fully connected ANNs do not assume the input has local spatial structure, while convolution ANNs do. Because gamma$-$ray spectra have local spatial structure in the form of photopeaks and Compton continua, it may be better to use a convolutional ANN over a fully connected ANN.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{images/Autoencoder_structure}
+\caption{An example of an autoencoder \cite{wiki:AutoencoderStructure}.}
+\label{fig:Autoencoder_structure}
+\end{figure}
+
+
 % Fully connected ANNs do not assume there is local spatial structure in a signal, so the fully connected ANN would need to learn that there is local structure. Convolutional ANNs assume there is local structure, and the extent of this structure can be changed by changing the length of the convolutional ANNs filters.
 
 % Once the autoencoder is trained, the hidden layer and output layer (representing the reconstructed spectrum) will be used to train a separate ANN for isotope identification and quantification. The performance of these ANNs will be compared.
 
-\section{Additional Simulated Detector Models}
-
-Simulating addition NaI detectors using GADRAS may help the ANN generalize to different detectors. To begin this process, two 2$-$inch by 2$-$inch NaI detectors will be modeled using GADRAS and their properties will be changed (for example: crystal dimension, calibration, scattering environment). The number of different detectors modeled will be increased and the generalization performance of the ANN will be evaluated. The generalization performance can be calculated by checking the ANNs performance on spectra produced by a detector whose properties the ANN has not seen during training.  
 
 
 
-\section{K$-$folds Cross Validation}
+\section{K$-$folds Cross Validation} \label{CrossValidation}
+
 % section is good.
-K$-$folds cross validation will be incorporated into the model. Cross validation is the general method of determining how well a model will generalize to novel data. K$-$folds cross validation does this by splitting the available data into $k$ subsets. From these, $k-$1 subsets are used to train the ANN and the remaining subset is used as the validation dataset. This process is repeated, using each subset once as the validation dataset. Typical values for $k$ are either 5 or 10. Cross validation more accurately analyze how well a give ANN structure and set of hyperparameters will perform. K$-$folds cross validation will be added to hyperparameter optimization. The error and hyperparameter structure will be compared for ANNs trained with no cross validation, 5$-$folds cross validation, and 10$-$folds cross validation.
+K$-$folds cross validation will be included in the hyperparameter search for each dataset. Cross validation is the general method of determining how well a model will generalize to novel data. K$-$folds cross validation does this by splitting the available data into $k$ subsets. From these, $k-$1 subsets are used to train the ANN and the remaining subset is used as the validation dataset. Typical values for $k$ are either 5 or 10. This process is repeated, using each subset once as the validation dataset. This process is illustrated in Figure \ref{fig:kfolds_example} for 5$-$folds cross validation. 
 
-\section{Bagging}
+For each different hyperparameter combination, a new set of cross validation ANNs will be trained. The average of the final validation dataset errors will be used to pick the optimum ANN. Performing cross validation will more accurately demonstrate how well a given set of hyperparameters will generalize to new data. For each dataset the error and hyperparameter structure will be compared for ANNs trained with no cross validation, 5$-$folds cross validation, and 10$-$folds cross validation.
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\linewidth]{images/kfolds_example}
+\caption{An example of 5$-$folds cross validation. In each fold, the same dataset is partitioned into training data, in blue, and validation data, in green. Each training dataset is used to train a separate ANN. Each ANNs respective validation dataset is used to stop the ANNs training.}
+\label{fig:kfolds_example}
+\end{figure}
+
+
+
+
+\section{Bagging} \label{Bagging}
 % section is good.
-Each time the ANN trains, it produces slightly different identification results and performance. Bagging (bootstrap aggregating), or the process of averaging the outputs of many ANNs, can reduce the variance in the output \cite{Breiman1996}. In addition to this, bagging more accurately displays the true performance of a given ANN structure.
+Each time the ANN trains, it produces slightly different identification results and performance. Bagging, or the process of averaging the outputs of many ANNs, can reduce the variance in the output \cite{Breiman1996}. In addition to this, bagging more accurately displays the true performance of a given ANN structure.
 
-Analyzing the performance of bagging begins once the ANN structure is found from the random hyperparameter search. Using this structure, twenty$-$five models will be trained. Each model will use a training set composed of $N$ samples sampled with replacement from the available data. The accuracy and variance in the output as more models are averaged will be discussed. The accuracy and variance are expected to plateau with enough models being averaged. If the accuracy or variance do not plateau after 25 models, additional will be created until the effect is observed
+Analyzing the performance of bagging begins once the ANN structure is found from the random hyperparameter search. Using this structure, ten models will be trained. Each model will use the entire training dataset, ending training at the average iteration used for the cross validation step. The accuracy and variance in the output as more models are averaged will be reported. The accuracy and variance are expected to plateau with enough models being averaged. If the accuracy or variance do not plateau after ten models, additional will be created until the effect is observed.
 
 % future future work can explore boosting with these ANNs or weak learners. Could be very interesting. Also, weak learning models can be made tiny, possibly improving run-time without sacrificing (or even improving on) performance. 
 
 
 \section{Model Confidence Using the Dropout Uncertainty Method} \label{ModelConfidence}
 
-We can exploit the dropout method used to regularized the ANN to get a confidence measure given a spectrum \cite{Yarin2016}. Once the ANN is trained, an unknown sample is presented to the model and the solution is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same unknown sample is then passed through the ANN and the answer recorded. This process of dropout and recording the resulting output is repeated. The variance of the outputs from this process can be used to determine the ANNs confidence in a given pattern. 
+The dropout method used to regularize the ANN can be exploited to get a confidence measure on a given spectrum \cite{Yarin2016}. Once the ANN is trained, an unknown sample is presented to the model and the output is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same unknown sample is then passed through the ANN and the answer recorded. This process of dropout and recording the resulting output is repeated. The variance of the outputs from this process can be used to determine the ANNs confidence in a given pattern. 
+
+given a model input $x^{*}$. $\hat{y}$ is the model output. \lambda is the . l is the prior length$-$scale. The prior length$-$scale is a user defined parameter. A short l corresponds to high frequency data, with .
+
+
+
+\begin{equation} \label{eq:update1}
+E (y^{*}) \approx \frac{1}{T} \sum^{T}_{t=1} \hat{y^{*}_t} (x^{*})
+\end{equation}
+
+\begin{equation} \label{eq:update1}
+Var (y^{*}) \approx \tau^{-1} \boldsymbol{I}_D + \frac{1}{T} \sum^{T}_{t=1} \hat{y^{*}_t} (x^{*})^{T} \hat{y^{*}_t} - E(y^{*})^{T}E(y^{*})
+\end{equation}
+
+\begin{equation} \label{eq:update1}
+\tau = \frac{l^2 p }{2 N \lambda}
+\end{equation}
+
 
 A few results are predicted using the ANN confidence. It is also expected that high signal$-$to$-$background measurements and isotope mixtures of a few components will have a high model confidence. It is expected that low signal$-$to$-$background measurements and mixtures of many components will have a low model confidence. Additionally, the model confidence with an isotope not included in the training set should be very low. This confidence measure may be used to reduce the false alarm rate when performing isotope identification. 
 
-\section{New Training Stopping Condition}
+% \section{New Training Stopping Condition}
 
-ANNs need a condition to end training. This condition is typically when a certain allowable error in a validation dataset is reached or when the training error does not appreciably decrease over time. Previously in this work, the stopping condition has been based on the cost function the ANN is trying to decrease, the cross entropy. It may be better to stop training when a more useful metric. An example of this metric is when the maximum error in the training set reaches a certain threshold. Another metric is to stop training when the ANNs mean squared error for a validation set stops decreasing.
+%%% Might still use this in the analysis. Might check that it changes anything for a few cases. Adds another degree of freedom in what I'm analyzing. Exponentiates number of things I need to test, without clear reason for benefit. 
+
+% ANNs need a condition to end training. This condition is typically when a certain allowable error in a validation dataset is reached or when the training error does not appreciably decrease over time. Previously in this work, the stopping condition has been based on the cost function the ANN is trying to decrease, the cross entropy. It may be better to stop training when a more useful metric. An example of this metric is when the maximum error in the training set reaches a certain threshold. Another metric is to stop training when the ANNs mean squared error for a validation set stops decreasing.
 
 
 
