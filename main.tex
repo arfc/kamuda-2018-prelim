@@ -89,7 +89,10 @@
 
 
 \begin{abstract}
-Abstract goes here.
+
+
+There is a need to develop an algorithm that can identify and quantify isotopes in low$-$resolution gamma$-$ray spectra. Trained gamma$-$ray spectroscopists typically rely on intuition when identifying isotopes in spectra. Because they incorporate something similar to intuition, pattern recognition algorithms such as neural networks are prime candidates for automated isotope identification. Algorithms based on feature extraction such as peak finding or ROI algorithms work well for well calibrated high resolution detectors. For low$-$resolution detectors, it may be more beneficial to use algorithms that incorporate more abstract features of the spectrum. To solve this, an artificial neural network (ANN) was trained to predict the presence and relative activities of isotopes from a mixture of many isotopes. The ANN is trained with simulated gamma-ray spectra, allowing easy expansion of the library of target isotopes. This proposal outlines extensions to this work including investigating new datasets and ANN structures.
+
 \end{abstract}
 
 \tableofcontents
@@ -124,9 +127,9 @@ This ANSI standard also requires isotope identification algorithms to operate wh
 
 % Tasks investigated here will focus on identifying isotopes in the ANSI N42-34-2006 required list \cite{ANSI}. This ANSI standard also requires isotope identification algorithms to operate when the radioactive material is behind shielding. Accordingly, the impact of shielding will also be incorporated into this work. 
 
-In addition to isotope identification, this work will explore the ability of ANNs to quantify the count contribution from each isotope. The ANN's ability to extract count contribution information from gamma$-$ray spectra is important for nondestructive analysis (NDA). While NDA is useful for. The second purpose is a possible use of neural networks in post$-$detonation nuclear forensics. In post$-$detonation nuclear forensics, a large number of radioactive fission products are created. Quantifying the amount of isotopes in post$-$detonation debris can yield useful information about the device's properties. Mixtures of laboratory sources will be used as a surrogate for post$-$detonation debris and the ability for the ANN to accurately calculate the mixture components will be established.   
+In addition to isotope identification, this work will explore the ability of ANNs to quantify the count contribution from each isotope. The ANN's ability to extract count contribution information from gamma$-$ray spectra is important for nondestructive analysis (NDA). The second purpose is a possible use of neural networks in post$-$detonation nuclear forensics. In post$-$detonation nuclear forensics, a large number of radioactive fission products are created. Quantifying the amount of isotopes in post$-$detonation debris can yield useful information about the device's properties. Mixtures of laboratory sources will be used as a surrogate for post$-$detonation debris and the ability for the ANN to accurately calculate the mixture components will be established.   
 
-Another case where knowing the isotope quantities in a mixture of isotopes is in uranium enrichment calculations. Knowing the enrichment of uranium is important in two areas. The first are is when uranium is identified at a border crossing. Typically the spectrum would need to be given to a trained spectroscopist to quantify the enrichment, but this process could be automated on the device first used to identify it. The second case would be in treaty verification technologies. Low$-$resolution NaI gamma$-$ray detectors decrease the amount of possibly sensitive information while giving enough information to produce accurate enrichment quantification. The fact that ANNs can be taught to ignore certain patterns and only give information agreed upon by treaty signatories also makes them a good tool for treaty verification. The ability of ANNs to operate without knowing the shielding and background spectrum makes them better for zero knowledge scenarios. NaI detectors also have a higher efficiency than the higher resolution HPGe. This means that the counting times for NaI are smaller than would be required to get the same number of counts using an HPGe. 
+Another case where knowing the isotope quantities in a mixture of isotopes is in uranium enrichment calculations. Knowing the enrichment of uranium is important in two scenarios. The first scenario is when uranium is identified at a border crossing. Typically the spectrum would need to be given to a trained spectroscopist to quantify the enrichment, but this process could be automated on the device first used to identify it. The second case would be in treaty verification technologies. Low$-$resolution NaI gamma$-$ray detectors decrease the amount of possibly sensitive information while giving enough information to produce accurate enrichment quantification. The fact that ANNs can be taught to ignore certain patterns and only give information agreed upon by treaty signatories also makes them a good tool for treaty verification. The ability of ANNs to operate without knowing the shielding and background spectrum makes them better for zero knowledge scenarios. NaI detectors also have a higher efficiency than the higher resolution HPGe. This means that the counting times for NaI are smaller than would be required to get the same number of counts using an HPGe. 
 
 
 
@@ -210,7 +213,7 @@ In general, ANNs have a tendency to memorize their training set in a process cal
 
 There have been a number of published papers which apply ANNs to automated isotope identification. ANNs have been applied to peak fitting \cite{Abdel-Aal2002}, isotope identification \cite{Abdel-Aal1996, Medhat2012}, and activity estimation \cite{Abdel-Aal1996, Vigneron1996}. Many of this work rely on ROI methods \cite{Pilato1999}, feature extraction \cite{Chen2009}, high$-$resolution gamma$-$ray spectra as the input to the ANN \cite{Yoshida2002}, small libraries of isotopes, and assume perfectly calibrated detectors. ANN training methods created for high$-$resolution gamma$-$ray spectra may not perform well when trained using low$-$resolution spectra given the large discrepancy in resolution. ANN training that relies on ROI methods may not perform well when ROIs overlap significantly with large libraries of isotopes.
 
-It has been shown that an ANN may be trained to perform isotope identification and quantification using low$-$resolution NaI gamma$-$ray spectrum using a library of five isotopes \cite{Olmos1991}. While promising, this study did not include complicated source mixture analysis. This study also used a library too small to be of practical use. The American National Standards Institutes (ANSI) has identified 31 gamma$-$ray emitting isotopes that automated isotope identification algorithms should be able to identify \cite{ANSI}.
+It has been shown that an ANN may be trained to perform isotope identification and quantification using low$-$resolution NaI gamma$-$ray spectrum using a library of six isotopes \cite{Olmos1991}. While promising, this study used a library too small to be of practical use. The American National Standards Institutes (ANSI) has identified 31 gamma$-$ray emitting isotopes that automated isotope identification algorithms should be able to identify \cite{ANSI}.
 
 
 \chapter{Artificial Neural Network Approach to Identifying and Quantifying isotopes in Gamma$-$Ray Spectra}
@@ -273,7 +276,9 @@ Using this method, many training sets can be created depending on different algo
 
 \section{Training Details and Hyperparameter Optimization}
 
-Once the ANN hyperparameters are decided on, an optimization algorithm is needed to train the model. The Adam optimizer was chosen as the training algorithm for this work due to its incorporation of parts of other successful optimization algorithms and its reported superior performance over these algorithms \cite{Kingma2015}. Another benefit of the Adam optimizer is the introduction of only one additional hyperparameter, the learning rate. Other optimizers require tuning more than one additional hyperparameter. During training, the ANN minimized the average cross entropy,
+An optimization algorithm is needed to train the model. Optimization is necessary to choose good model parameters and hyperparameters. Model parameters are the weights connecting each layer in an ANN. Optimizing the model parameters is also known as training or learning. Hyperparameters are the variables that define the structure of the ANN (number of layers, nodes in each layer, non$-$linear function on each node) as well as the variables that control how the model learns (the learning rate, neuron dropout frequency, loss function). Finding appropriate hyperparameters requires trying different hyperparameter combinations and seeing which gives the lowest validation error on a dataset. This can be done using either a manual or automated search.
+
+The Adam optimizer was chosen as the training algorithm for this work due to its incorporation of parts of other successful optimization algorithms and its reported superior performance over these algorithms \cite{Kingma2015}. Another benefit of the Adam optimizer is the introduction of only one additional hyperparameter, the learning rate. Other optimizers require tuning more than one additional hyperparameter. During training, the ANN minimized the average cross entropy,
 
 \begin{equation} \label{eq:CrossEntropy}
 E = -{\frac{1} N} \sum_{n=1}^N y_n \log(\hat{y}_n) +  (1-y_n) \log(1-\hat{y}_n),
@@ -281,10 +286,9 @@ E = -{\frac{1} N} \sum_{n=1}^N y_n \log(\hat{y}_n) +  (1-y_n) \log(1-\hat{y}_n),
 
 between the correct labels, $y_n$, and the network predictions, $\hat{y}_n$. This cost function was chosen because it is traditionally used with ANNs whose output is the $softmax$ function. 
 
-
 Raw data is typically preprocessed before being input to an ANN. For this work each spectrum was preprocessed by scaling the counts in each bin between [0,1]. Scaling the inputs improves numerical stability during training. 
 
-As previously discussed, hyperparameters are often necessary to properly train an ANN. The following hyperparameters are considered in this study are: the number of neurons in each layer, the number of layers used, initial learning rate for the training algorithm, the $L_2$ weight regularization strength, and neuron dropout rate. 
+Hyperparameters are often necessary to properly train an ANN. The following hyperparameters are considered in this study are: the number of neurons in each layer, the number of layers used, initial learning rate for the training algorithm, the $L_2$ weight regularization strength, and neuron dropout rate. 
 
 Adding $L_2$ weight regularization allows the magnitude of the weights to increase only when there is a comparable reduction in the unmodified error function.
 %
@@ -292,9 +296,9 @@ Adding $L_2$ weight regularization allows the magnitude of the weights to increa
 \tilde{E} = E + \sum_i \lambda w_i^2.
 \end{equation}
 %
-In Equation \ref{eq:L2_Reg}, $w_i$ is the weight between each neuron in the ANN and $\lambda$ is the regularization strength hyperparameter. A larger $\lambda$ will force the ANN to prefer smaller weights connecting the neurons. If $\lambda$ is too small, the model is more likely to overfit. If $\lambda$ is too large, the ANN will preferentially minimize the $L_n$ error, failing to learn the desired task.
+In Equation \ref{eq:L2_Reg}, $w_i$ is the weight between each neuron in the ANN and $\lambda$ is the regularization strength hyperparameter. A larger $\lambda$ will force the ANN to prefer smaller weights connecting the neurons. This reduces the models capacity, or its ability to represent complicated or intricate functions. This is similar to putting a limit on the magnitude of the coefficients in a high order polynomial when fitting data. If $\lambda$ is too small, the model will have a greater capacity. This will create a model that is more likely to overfit. If $\lambda$ is too large, the ANN will preferentially minimize the $L_n$ error, failing to learn the desired task.
 
-Another method to reduce model capacity is neuron dropout. Neuron dropout is the process of temporarily removing a neuron from the ANN architecture during training \cite{Srivastava2014}. The probability that a neuron is removed is called the neuron dropout rate, which is a hyperparameter. By applying dropout throughout training, the ANN's architecture changes every iteration. The makes neuron dropout a cost efficient way to average many different ANN architectures, improving performance.
+Another method to reduce model capacity is neuron dropout. Neuron dropout is the process of temporarily removing a neuron from the ANN architecture during training \cite{Srivastava2014}. The probability that a neuron is removed is called the neuron dropout rate, which is a hyperparameter. By applying dropout throughout training, the ANN's architecture changes every iteration. This makes neuron dropout a cost efficient way to average many different ANN architectures, improving performance.
 
 % To reduce free parameters that might lead to overfitting, the number of neurons in each layer is typically smaller than the size of the input layer, in this case 1024. Another method of   Because  kept below 10$^{4}$.   
 
@@ -486,7 +490,7 @@ The ANSI standard also includes the ability to identify isotope mixtures in thei
 
 To fit the source interdiction scenario, count rate and source measurement time for spectra in the simulated training set will be kept within a range. The count rate on the detector will range from 10 counts per second (cps) to 10$^{4}$ cps. Below 10 cps the signal$-$to$-$background ratio will be too low for an identification. Above 10$^{4}$ cps deadtime effects will distort the spectrum. Sources above this count rate are easy to detect and would receive additional scrutiny. Source measurement times will range from 10 s $-$ 1 hr. This is a typical range of measurements for source interdiction. 
 
-The performance of the ANN on this dataset will be reported in several ways. The ability to detect isotopes behind shielding will be tested by observing how the ANN identifies various laboratory isotopes behind shielding. Sources for this will include $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. These sources are chosen because they represent isotopes with simple gamma$-$ray spectra ($^{60}$Co and $^{137}$Cs have two photopeaks) and more complicated spectra ($^{152}$Eu and $^{133}$Ba have multiple photopeaks). The amount of lead, iron, and aluminum included in this experiment will depend on thickness of these materials available in our laboratory. In addition to laboratory sources, real and simulated spectra of shielded HEU and WGPu will be included in this analysis. The mean ANN output, their variances, and the ANN confidence (described in section \ref{ModelConfidence}) will be presented for a number of spectra. 
+The performance of the ANN on this dataset will be reported in several ways. The ability to detect isotopes behind shielding will be tested by observing how the ANN identifies various laboratory isotopes behind shielding. Sources for this will include $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. These sources are chosen because they represent isotopes with simple gamma$-$ray spectra ($^{60}$Co and $^{137}$Cs have two identifiable photopeaks) and more complicated spectra ($^{152}$Eu and $^{133}$Ba have multiple photopeaks). The amount of lead, iron, and aluminum included in this experiment will depend on thickness of these materials available in our laboratory. In addition to laboratory sources, real and simulated spectra of shielded HEU and WGPu will be included in this analysis. The mean ANN output, their variances, and the ANN confidence (described in section \ref{ModelConfidence}) will be presented for a number of spectra. 
 
 The ANNs ability to identify spectra with various calibrations will also use $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. Spectra of individual sources will be measured using various calibrations. The calibration will be changed by changing the PMT voltage from 700 V to 800 V in 10 V steps. The mean ANN output, their variances, and the ANN confidence will be presented for a number of spectra. 
 
@@ -549,7 +553,7 @@ One important question is how many combinations to include in the training set. 
 
 \subsection{Additional Simulated Detector Models}
 
-Simulating addition NaI detectors using GADRAS may help the ANN generalize to different detectors. To begin this process, two 2$-$inch by 2$-$inch NaI detectors will be modeled using GADRAS and their properties will be changed. These changes will include changing the calibration and changing the shape of the photopeaks. The calibration changes will be based on laboratory NaI detectors. The shape of photopeaks will be changed based on laboratory NaI detectors' full$-$width$-$at$-$half$-$max (FWHM). Ten different models will be included. 
+Simulating additional NaI detectors using GADRAS may help the ANN generalize to different detectors. To begin this process, two 2$-$inch by 2$-$inch NaI detectors will be modeled using GADRAS and their properties will be changed. These changes will include changing the calibration and changing the shape of the photopeaks. The calibration changes will be based on laboratory NaI detectors. The shape of photopeaks will be changed based on laboratory NaI detectors' full$-$width$-$at$-$half$-$max (FWHM). Ten different models will be included. 
 
 Initial hyperparameter searches will be based on datasets simulated using a single detector. After an optimal ANN structure is found using the hyperparameter search, two new training datasets will be constructed with additional detector models. The two datasets will be constructed from five models and ten models. Two ANNs will be trained using both datasets. The performance of the ANNs on a dataset constructed using five new detector models will be reported. It is expected that the ANN trained using more detector models will have a higher accuracy on the new testing dataset. 
 
@@ -558,14 +562,15 @@ Initial hyperparameter searches will be based on datasets simulated using a sing
 
 % While autoencoders were touched on in the uranium enrichment work, they have not been explored thoroughly. There is some evidence that the autoencoder was overtrained to the A special case of denoising autoencoders will be explored for the ANSI dataset. 
 
-An autoencoder is an unsupervised ANN whose goal is to learn an encoding for the input. This is accomplished by simultaneously training an encoding ANN and a decoding ANN. An example of this can be seen in Figure \ref{fig:Autoencoder_structure}. The encoding ANN reduces an $n-$dimension signal to a $m-$dimension signal, where $m < n$. The decoding ANN takes the $m-$dimension signal and attempts to reproduce the $n-$dimension input or one similar.
+An autoencoder is an unsupervised ANN whose goal is to learn a representation of the input. This is accomplished by simultaneously training an encoding ANN and a decoding ANN. An example of this can be seen in Figure \ref{fig:Autoencoder_structure}. As seen in this figure, the encoding ANN reduces an $n-$dimension input signal, $X$, to a $m-$dimension signal, $z$, where $m < n$. The decoding ANN takes the encoded signal, $z$, and outputs a reproduction of the input signal, $X'$.
 
 
-Without an autoencoder, a single ANN had to learn multiple tasks to identify isotopes. An ANN would have to simultaneously identify the detector calibration, background signal, and possible source signal. By training an autoencoder to reconstruct a background$-$subtracted and correctly calibrated spectrum, the task of isotope identification is simplified for the ANN. This may result in more accurate identifications. To test this, a single autoencoder and three ANNs will be trained. The first will be trained without an autoencoder. The second will be trained using the encoder as input. The third will be trained using the full autoencoder as input. A manual search or a random hyperparameter search will be used to find an appropriately structured autoencoder. The testing and validation error for these ANNs will be compared for each dataset described previously.
-
+Without an autoencoder, a single ANN has to learn multiple tasks to identify isotopes. An ANN would have to simultaneously identify the detector calibration, background signal, and possible source signal. By training an autoencoder to reconstruct a background$-$subtracted and correctly calibrated spectrum, the task of isotope identification is simplified for the ANN. This may result in more accurate identifications. To test this, for each dataset a single autoencoder and three ANNs will be trained. The first will be trained without an autoencoder. The second will be trained using the encoder as input. The third will be trained using the full autoencoder as input. A random hyperparameter search will be used to find an appropriately structured autoencoder. The testing and validation error for these ANNs will be compared for each respective dataset.
 
 % is local spatial structure too much jargon? 
-In addition to using fully connected autoencoders, a 1$-$D convolutional autoencoder will also be explored. Fully connected ANNs do not assume the input has local spatial structure, while convolution ANNs do. Because gamma$-$ray spectra have local spatial structure in the form of photopeaks and Compton continua, it may be better to use a convolutional ANN over a fully connected ANN.
+In addition to using fully connected autoencoders, a 1$-$D convolutional autoencoder will also be explored. Fully connected ANNs do not assume the input has local spatial structure, while convolution ANNs do. Because gamma$-$ray spectra have local spatial structure in the form of photopeaks and Compton continua, it may be better to use a convolutional ANN over a fully connected ANN. To test this, the experiment described above will be repeated using a 1$-$D convolutional autoencoder.
+
+% Or I might just use the 1D convolutional autoencoder because it makes more sense
 
 \begin{figure}[H]
 \centering
@@ -612,26 +617,29 @@ Analyzing the performance of bagging begins once the ANN structure is found from
 
 \section{Model Confidence Using the Dropout Uncertainty Method} \label{ModelConfidence}
 
-The dropout method used to regularize the ANN can be exploited to get a confidence measure on a given spectrum \cite{Yarin2016}. Once the ANN is trained, an unknown sample is presented to the model and the output is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same unknown sample is then passed through the ANN and the answer recorded. This process of dropout and recording the resulting output is repeated. The variance of the outputs from this process can be used to determine the ANNs confidence in a given pattern. 
-
-given a model input $x^{*}$. $\hat{y}$ is the model output. \lambda is the . l is the prior length$-$scale. The prior length$-$scale is a user defined parameter. A short l corresponds to high frequency data, with .
-
-
+The dropout method used to regularize the ANN can be exploited to get a confidence measure on a given spectrum \cite{Yarin2016}. Once the ANN is trained, an input is given to the model and the output is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same input is then passed through the ANN and the answer recorded. This process of dropout and recording the resulting output is repeated. Using this process, 
 
 \begin{equation} \label{eq:update1}
 E (y^{*}) \approx \frac{1}{T} \sum^{T}_{t=1} \hat{y^{*}_t} (x^{*})
 \end{equation}
 
+gives the average output given some input $x^{*}$, where $\hat{y}$ is the model output and T is the number of times dropout was performed. The variance of the outputs is given by 
+
+
 \begin{equation} \label{eq:update1}
-Var (y^{*}) \approx \tau^{-1} \boldsymbol{I}_D + \frac{1}{T} \sum^{T}_{t=1} \hat{y^{*}_t} (x^{*})^{T} \hat{y^{*}_t} - E(y^{*})^{T}E(y^{*})
+Var (y^{*}) \approx \tau^{-1} \boldsymbol{I}_D + \frac{1}{T} \sum^{T}_{t=1} \hat{y^{*}_t} (x^{*})^{T} \hat{y^{*}_t}(x^{*}) - E(y^{*})^{T}E(y^{*})
 \end{equation}
+
+where D is the length of the output vector and $\tau$ is defined by 
 
 \begin{equation} \label{eq:update1}
 \tau = \frac{l^2 p }{2 N \lambda}
 \end{equation}
 
+where $l$ is the prior length$-$scale, p is the probability of a neuron not being dropped, N is the length of the input vector, and $\lambda$ is the learning rate of the ANN. The prior length$-$scale, $l$ is a user defined parameter. A small valued $l$ corresponds to high frequency data and a larger valued $l$ corresponds to low frequency data. 
 
-A few results are predicted using the ANN confidence. It is also expected that high signal$-$to$-$background measurements and isotope mixtures of a few components will have a high model confidence. It is expected that low signal$-$to$-$background measurements and mixtures of many components will have a low model confidence. Additionally, the model confidence with an isotope not included in the training set should be very low. This confidence measure may be used to reduce the false alarm rate when performing isotope identification. 
+
+A few results are predicted using the ANN confidence. It is expected that high signal$-$to$-$background measurements and isotope mixtures of a few components will have a high model confidence. It is expected that low signal$-$to$-$background measurements and mixtures of many components will have a low model confidence. Additionally, the model confidence with an isotope not included in the training set should be very low. This confidence measure may be used to reduce the false alarm rate when performing isotope identification. 
 
 % \section{New Training Stopping Condition}
 
@@ -643,7 +651,7 @@ A few results are predicted using the ANN confidence. It is also expected that h
 
 \chapter{Conclusion}
 
-Previous work has shown that ANNs are capable of solving problems in gamma$-$ray spectroscopy. Investigating more advanced ANN methods and proposed datasets may improve on previously reported performance.
+Previous work has shown that ANNs are capable of solving problems in gamma$-$ray spectroscopy. Investigating more advanced ANN models and proposed datasets may improve on previously reported performance.
 
 
 
