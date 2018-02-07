@@ -118,18 +118,17 @@ The main question addressed in this work is: Can artificial neural networks (ANN
 
 The proposed work will demonstrate the performance of ANNs for automated gamma$-$ray spectroscopy in low$-$resolution spectra. The low$-$resolution detector of interest in this work is a 2$-$inch by 2$-$inch NaI(Tl) cylindrical scintillation detector. This detector is industry standard due to its ease of use, low cost, and acceptable resolution for gamma$-$ray spectroscopy. 
 
-The algorithms performance will be displayed on three different datasets. The first dataset will focus on identifying isotopes in ANSI N42$-$34$-$2006, the american national
-standard performance criteria for hand$-$held instruments for the detection and identification of radionuclides \cite{ANSI}. The second dataset will focus on 
-
-This ANSI standard also requires isotope identification algorithms to operate when the radioactive material is behind shielding.
+The algorithms performance will be displayed on two different datasets. The first dataset will focus on identifying isotopes in ANSI N42$-$34$-$2006, the American national standard performance criteria for hand$-$held instruments for the detection and identification of radionuclides \cite{ANSI}. The second dataset will be built to perform uranium enrichment calculations.
 
 % This may give ANNs the ability to identify and quantify isotopes using large isotope libraries practical for domestic nuclear security, operate using low-resolution NaI radiation detectors without knowing the detector calibration or background spectrum.
 
 % Tasks investigated here will focus on identifying isotopes in the ANSI N42-34-2006 required list \cite{ANSI}. This ANSI standard also requires isotope identification algorithms to operate when the radioactive material is behind shielding. Accordingly, the impact of shielding will also be incorporated into this work. 
 
-In addition to isotope identification, this work will explore the ability of ANNs to quantify the count contribution from each isotope. The ANN's ability to extract count contribution information from gamma$-$ray spectra is important for nondestructive analysis (NDA). The second purpose is a possible use of neural networks in post$-$detonation nuclear forensics. In post$-$detonation nuclear forensics, a large number of radioactive fission products are created. Quantifying the amount of isotopes in post$-$detonation debris can yield useful information about the device's properties. Mixtures of laboratory sources will be used as a surrogate for post$-$detonation debris and the ability for the ANN to accurately calculate the mixture components will be established.   
+In addition to isotope identification, this work will explore the ability of ANNs to quantify the count contribution from each isotope. The ANN's ability to extract count contribution information from gamma$-$ray spectra is important for nondestructive analysis (NDA). An example of NDA is performing uranium enrichment calculations. Knowing the enrichment of uranium is important in two scenarios. The first scenario is when uranium is identified at a border crossing. Typically the spectrum would need to be given to a trained spectroscopist to quantify the enrichment, but this process could be automated on the device first used to identify it. The second case would be in treaty verification technologies. Low$-$resolution NaI gamma$-$ray detectors decrease the amount of possibly sensitive information while giving enough information to produce accurate enrichment quantification. The fact that ANNs can be taught to ignore certain patterns and only give information agreed upon by treaty signatories also makes them a good tool for treaty verification. The ability of ANNs to operate without knowing the shielding and background spectrum makes them better for zero knowledge scenarios. NaI detectors also have a higher efficiency than the higher resolution HPGe. This means that the counting times for NaI are smaller than would be required to get the same number of counts using an HPGe.    
 
-Another case where knowing the isotope quantities in a mixture of isotopes is in uranium enrichment calculations. Knowing the enrichment of uranium is important in two scenarios. The first scenario is when uranium is identified at a border crossing. Typically the spectrum would need to be given to a trained spectroscopist to quantify the enrichment, but this process could be automated on the device first used to identify it. The second case would be in treaty verification technologies. Low$-$resolution NaI gamma$-$ray detectors decrease the amount of possibly sensitive information while giving enough information to produce accurate enrichment quantification. The fact that ANNs can be taught to ignore certain patterns and only give information agreed upon by treaty signatories also makes them a good tool for treaty verification. The ability of ANNs to operate without knowing the shielding and background spectrum makes them better for zero knowledge scenarios. NaI detectors also have a higher efficiency than the higher resolution HPGe. This means that the counting times for NaI are smaller than would be required to get the same number of counts using an HPGe. 
+% The second purpose is a possible use of neural networks in post$-$detonation nuclear forensics. In post$-$detonation nuclear forensics, a large number of radioactive fission products are created. Quantifying the amount of isotopes in post$-$detonation debris can yield useful information about the device's properties. Mixtures of laboratory sources will be used as a surrogate for post$-$detonation debris and the ability for the ANN to accurately calculate the mixture components will be established.
+
+% Another case where knowing the isotope 
 
 
 
@@ -268,7 +267,7 @@ In order to train an ANN, a training set and training key must be provided. The 
 Because the calibration on NaI detectors shifts over time (due to voltage drift in the electronics and changes in crystal temperature), a method to change training spectra calibration was included. To mimic gain shift, the channels in each spectrum were linearly rebinned by some percent. The magnitude of each shift was uniformly chosen between a +/- 25\% gain drift. After rebinning, the resulting spectrum was reconstructed using third order spline interpolation with the new bin positions.
 
 
-Using this method, many training sets can be created depending on different algorithm goals. The training set and isotope library can be modified for specific problems like unknown source interdiction, uranium enrichment calculations, and post$-$detonation nuclear forensic debris analysis. Methods of creating ANNs for these problems will be described in later sections.
+Using this method, many training sets can be created depending on different algorithm goals. The training set and isotope library can be modified for specific problems like unknown source interdiction and uranium enrichment calculations. Methods of creating ANNs for these problems will be described in later sections.
 
 % The isotope library chosen for this demonstration was 29 gamma-ray producing isotopes from the ANSI N42.34-2006 standard, as well as $^{152}$Eu \cite{ANSI}. Based on lab observations using an Ortec 905-3 NaI spectrometer, the average background count rate was set at 85 counts per second (cps). Each spectrum in the training set had a maximum of 5 different non-background isotopes included in the spectrum. Each isotope had a count rate which was logarithmically distributed between 10 and 1000 cps. The exposure time was logarithmically distributed between 10 and 2000 seconds. Each isotope, excluding those in background, had an equal probability of being included in each spectrum. The counts from background were distributed uniformly between background thorium, background uranium, and background $^{40}$K.
 
@@ -445,7 +444,7 @@ $^{60}$Co  & 0.074                                                         \\ \h
 
 \chapter{Future Work and Proposed Experiments}
 
-For the proposed work, there are a number of experiments that will explore applying ANNs to gamma$-$ray spectroscopy. An outline of this work can be seen in Figure \ref{fig:ANN_workflow}. Section \ref{ProposedDatasets} details three proposed simulated gamma$-$ray spectra datasets. Arguments are given for why these datasets represent important problems in gamma$-$ray spectroscopy. In addition to ANNs that use the full spectrum as input, ANNs that are trained to perform feature extraction will also be considered. Section \ref{Autoencoders} describes how autoencoders can be trained to extract key features from a gamma$-$ray spectrum. Section \ref{CrossValidation} describes the how the random hyperparameter search will be performed using K$-$folds cross validation. Once an appropriate ANN is found, a method called bagging (bootstrap aggregating) will be used to construct an ensemble of ANNs. Bagging is described in Section \ref{Bagging}. Finally, the ANN performance on each datasets will be evaluated. Performance metrics are based on the ANN error in testing datasets, described in section \ref{ProposedDatasets}, and ANN confidence, described in \ref{ModelConfidence}. 
+For the proposed work, there are a number of experiments that will explore applying ANNs to gamma$-$ray spectroscopy. An outline of this work can be seen in Figure \ref{fig:ANN_workflow}. Section \ref{ProposedDatasets} details two proposed simulated gamma$-$ray spectra datasets. Arguments are given for why these datasets represent important problems in gamma$-$ray spectroscopy. In addition to ANNs that use the full spectrum as input, ANNs that are trained to perform feature extraction will also be considered. Section \ref{Autoencoders} describes how autoencoders can be trained to extract key features from a gamma$-$ray spectrum. Section \ref{CrossValidation} describes the how the random hyperparameter search will be performed using K$-$folds cross validation. Once an appropriate ANN is found, a method called bagging (bootstrap aggregating) will be used to construct an ensemble of ANNs. Bagging is described in Section \ref{Bagging}. Finally, the ANN performance on each datasets will be evaluated. Performance metrics are based on the ANN error in testing datasets, described in section \ref{ProposedDatasets}.%, and ANN confidence, described in \ref{ModelConfidence}. 
 
 
 
@@ -461,7 +460,7 @@ For the proposed work, there are a number of experiments that will explore apply
 
 \section{Proposed Datasets} \label{ProposedDatasets}
 
-The proposed datasets represent important problems in automated gamma-ray spectroscopy. These include unknown source interdiction, uranium enrichment calculations, and post$-$detonation nuclear forensics 
+The proposed datasets represent important problems in automated gamma-ray spectroscopy. These include unknown source interdiction, uranium enrichment calculations, and isotope mixture analysis. 
 
 \subsection{Unknown Source Interdiction} \label{UnknownSourceInterdiction}
 
@@ -490,11 +489,11 @@ The ANSI standard also includes the ability to identify isotope mixtures in thei
 
 To fit the source interdiction scenario, count rate and source measurement time for spectra in the simulated training set will be kept within a range. The count rate on the detector will range from 10 counts per second (cps) to 10$^{4}$ cps. Below 10 cps the signal$-$to$-$background ratio will be too low for an identification. Above 10$^{4}$ cps deadtime effects will distort the spectrum. Sources above this count rate are easy to detect and would receive additional scrutiny. Source measurement times will range from 10 s $-$ 1 hr. This is a typical range of measurements for source interdiction. 
 
-The performance of the ANN on this dataset will be reported in several ways. The ability to detect isotopes behind shielding will be tested by observing how the ANN identifies various laboratory isotopes behind shielding. Sources for this will include $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. These sources are chosen because they represent isotopes with simple gamma$-$ray spectra ($^{60}$Co and $^{137}$Cs have two identifiable photopeaks) and more complicated spectra ($^{152}$Eu and $^{133}$Ba have multiple photopeaks). The amount of lead, iron, and aluminum included in this experiment will depend on thickness of these materials available in our laboratory. In addition to laboratory sources, real and simulated spectra of shielded HEU and WGPu will be included in this analysis. The mean ANN output, their variances, and the ANN confidence (described in section \ref{ModelConfidence}) will be presented for a number of spectra. 
+The performance of the ANN on this dataset will be reported in several ways. The ability to detect isotopes behind shielding will be tested by observing how the ANN identifies various laboratory isotopes behind shielding. Sources for this will include $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. These sources are chosen because they represent isotopes with simple gamma$-$ray spectra ($^{60}$Co and $^{137}$Cs have two identifiable photopeaks) and more complicated spectra ($^{152}$Eu and $^{133}$Ba have multiple photopeaks). The amount of lead, iron, and aluminum included in this experiment will depend on thickness of these materials available in our laboratory. In addition to laboratory sources, real and simulated spectra of shielded HEU and WGPu will be included in this analysis. The mean ANN outputs and their variances will be presented for a number of spectra. 
 
-The ANNs ability to identify spectra with various calibrations will also use $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. Spectra of individual sources will be measured using various calibrations. The calibration will be changed by changing the PMT voltage from 700 V to 800 V in 10 V steps. The mean ANN output, their variances, and the ANN confidence will be presented for a number of spectra. 
+The ANNs ability to identify spectra with various calibrations will also use $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba. Spectra of individual sources will be measured using various calibrations. The calibration will be changed by changing the PMT voltage from 700 V to 800 V in 10 V steps. The mean ANN outputs and variances will be presented for a number of spectra. 
 
-The ANNs ability to identify mixtures of less than three isotopes will be addressed. Mixtures of $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba will be recorded. The mean ANN output, their variances, and the ANN confidence will be reported. In addition to these, mixtures in required by the ANSI standard, 
+The ANNs ability to identify mixtures of less than three isotopes will be addressed. Mixtures of $^{60}$Co, $^{137}$Cs, $^{152}$Eu, and $^{133}$Ba will be recorded. The mean ANN outputs and their variances will be reported. In addition to these, mixtures in required by the ANSI standard, 
 
 \begin{itemize}
   \item $^{137}$Cs + depleted uranium (DU)
@@ -506,7 +505,7 @@ The ANNs ability to identify mixtures of less than three isotopes will be addres
   \item NORM + WGPu
 \end{itemize}
 
-will be simulated and their mean ANN output, variances, and the ANN confidence will be reported. 
+will be simulated and their mean ANN output and variance will be reported. 
 
 
 
@@ -516,11 +515,11 @@ will be simulated and their mean ANN output, variances, and the ANN confidence w
 
 Measuring the enrichment of uranium is important for treaty verification purposes. These measurements are performed in uranium enrichment facilities and to verify warhead disarmament. Due to treaty conditions limiting the amount of sensitive information released to inspectors, information barriers are required. Information barriers can include removing regions in gamma-ray spectra or giving no information about shielding between the source and detector. 
 
-ANNs are a good candidate as an information barrier for three reasons. First, their output can be constrained, only outputting the enrichment given a gamma-ray spectrum. Restricting the output ensures potentially sensitive details of the sample are not known. Second, ANNs can be trained to use spectra with unknown background radiation and calibration drift. Because the inspector will have a time constraint, it is assumed a separate background spectrum will not be taken. A background spectrum can be subtracted from a background and source spectrum, making analysis easier. ANNs can be taught to operate in areas with different background radiation. The other unknown, possible calibration drift, is typically corrected manually. Because the inspector will not have access to the spectrum, manual calibration adjustments cannot be performed. It has been shown that ANNs can be taught to identify isotopes in detectors with different calibration. Finally, the ANNs confidence in its predictions can be calculated. Low confidence predictions could indicate a hoax object has been measured. A few technical hurdles need to be addressed when constructing an ANN to perform uranium enrichment. These hurdles and methods to address them are described below.
+ANNs are a good candidate as an information barrier for three reasons. First, their output can be constrained, only outputting the enrichment given a gamma-ray spectrum. Restricting the output ensures potentially sensitive details of the sample are not known. Second, ANNs can be trained to use spectra with unknown background radiation and calibration drift. Because the inspector will have a time constraint, it is assumed a separate background spectrum will not be taken. A background spectrum can be subtracted from a background and source spectrum, making analysis easier. ANNs can be taught to operate in areas with different background radiation. The other unknown, possible calibration drift, is typically corrected manually. Because the inspector will not have access to the spectrum, manual calibration adjustments cannot be performed. It has been shown that ANNs can be taught to identify isotopes in detectors with different calibration.  \iffalse Finally, the ANNs confidence in its predictions can be calculated. Low confidence predictions could indicate a hoax object has been measured. \fi A few technical hurdles need to be addressed when constructing an ANN to perform uranium enrichment. These hurdles and methods to address them are described below.
 
 Because uranium emits relatively low energy gamma$-$rays, it's spectrum is especially susceptible to corruption by shielding. To address this, a shielding library will be included in the dataset simulation. This will be constructed using the same method described in section \ref{UnknownSourceInterdiction} using the material thicknesses shown in Table \ref{table:Shielding_to_include}.
 
-Treaty verification inspectors typically have under an hour to collect data for an enrichment measurement. For this reason source measurement times will range from 5 mins to 1 hr. Collection times shorter than 5 mins may produce ANNs with low confidence and high variance outputs. To demonstrate the ANNs performance versus collection time, a graph of the measurement time versus ANN accuracy and confidence on a simulated verification dataset will be included. It is expected that collecting times less than 10 mins will result in an ANN accuracy too low to be of practical use. For reference, Analytically chemical techniques can measure uranium enrichment to 0.1$-$0.2\% accuracy \cite{Pandas_Ch7_1991}. Comparing the areas of photopeaks in HPGe spectra, an accuracy of about 1\% is possible \cite{Pandas_Ch7_1991}. Also due to the time constraint, it is assumed that background data cannot be collected. To address this, each training sample will include a random combination of background isotopes. The background count rate will range from 10$-$120 cps.
+Treaty verification inspectors typically have under an hour to collect data for an enrichment measurement. For this reason source measurement times will range from 5 mins to 1 hr. Collection times shorter than 5 mins may produce ANNs with \iffalse low confidence and \fi high variance outputs. To demonstrate the ANNs performance versus collection time, a graph of the measurement time versus ANN accuracy \iffalse and confidence \fi  on a simulated verification dataset will be included. It is expected that collecting times less than 10 mins will result in an ANN accuracy too low to be of practical use. For reference, Analytically chemical techniques can measure uranium enrichment to 0.1$-$0.2\% accuracy \cite{Pandas_Ch7_1991}. Comparing the areas of photopeaks in HPGe spectra, an accuracy of about 1\% is possible \cite{Pandas_Ch7_1991}. Also due to the time constraint, it is assumed that background data cannot be collected. To address this, each training sample will include a random combination of background isotopes. The background count rate will range from 10$-$120 cps.
 
 
 Because trained inspectors are performing these measurements, large calibration drifts are not included in the training data. Small calibration drifts of less than 5\% will be included to account for temperature changes and electronic drift.
@@ -542,14 +541,25 @@ To test the ability for ANNs to measure uranium enrichment, depleted, low$-$enri
 % http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.541.4867&rep=rep1&type=pdf
 
 
-\subsection{Post$-$Detonation Nuclear Forensic Debris Analysis}
+% \subsection{Post$-$Detonation Nuclear Forensic Debris Analysis}
 
-Immediately after a nuclear detonation, first responders may be collecting a large number of gamma$-$ray spectra using handheld low$-$resolution detectors. These detectors may have an unknown or poor calibration and each spectrum may be measured for a short amount of time. Despite these drawbacks, the data is still valuable because it can potentially be used to determine isotopics of the debris generated by the explosion \cite{Moody}. Due to the complicated gamma$-$ray spectrum produced by a large number of radioactive fission products, many photopeaks and spectral features will overlap in a spectrum. This feature overlap increases the difficulty of and slows photopeak analysis, especially for low$-$resolution spectrometers. 
 
+\iffalse
+\subsection{Isotope Mixture Analysis}
+
+% Immediately after a nuclear detonation, first responders may be collecting a large number of gamma$-$ray spectra using handheld low$-$resolution detectors. These detectors may have an unknown or poor calibration and each spectrum may be measured for a short amount of time. Despite these drawbacks, the data is still valuable because it can potentially be used to determine isotopics of the debris generated by the explosion \cite{Moody}. Due to the complicated gamma$-$ray spectrum produced by a large number of radioactive fission products, many photopeaks and spectral features will overlap in a spectrum. This feature overlap increases the difficulty of and slows photopeak analysis, especially for low$-$resolution spectrometers. 
+
+Identifying mixtures of isotopes is important for two reasons. The first is that isotope mixtures may confuse identification algorithms by occluding important.
+
+Mixture identification is particularly difficult for NaI detectors 
 
 A real dataset of real spectra are needed to confirm the models performance. Mixtures of laboratory isotopes can be made. Mixtures will vary by signal$-$to$-$background ratio by varying source$-$to$-$detector distance and integration time. Isotopes available are: $^{60}$Co, $^{137}$Cs, $^{133}$Ba, $^{152}$Eu, $^{22}$Na and others. % Details to come....
 
+
+
 One important question is how many combinations to include in the training set. To address this, datasets will be created including single isotope spectra, a max of 5 isotope spectra, and a max of 10 isotope spectra. ANNs will be trained with increasing number of examples (1k, 5k, 10k, 50k, 100k). The performance of these ANNs will be compared by observing how the 
+
+\fi
 
 \subsection{Additional Simulated Detector Models}
 
@@ -614,10 +624,10 @@ Analyzing the performance of bagging begins once the ANN structure is found from
 
 % future future work can explore boosting with these ANNs or weak learners. Could be very interesting. Also, weak learning models can be made tiny, possibly improving run-time without sacrificing (or even improving on) performance. 
 
-
+\iffalse
 \section{Model Confidence Using the Dropout Uncertainty Method} \label{ModelConfidence}
 
-The dropout method used to regularize the ANN can be exploited to get a confidence measure on a given spectrum \cite{Yarin2016}. Once the ANN is trained, an input is given to the model and the output is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same input is then passed through the ANN and the answer recorded. This process of dropout and recording the resulting output is repeated. Using this process, 
+The dropout method used to regularize the ANN can be exploited to get a confidence measure on a given spectrum \cite{Yarin2016}. Once the ANN is trained, an input is given to the model and the output is recorded. Dropout is then used on the model using the same dropout probability that was used to train the model. The same input is then passed through the ANN and the answer recorded. The dropped neurons are restored and the process of dropout and recording the resulting output is repeated. Using this process, 
 
 \begin{equation} \label{eq:update1}
 E (y^{*}) \approx \frac{1}{T} \sum^{T}_{t=1} \hat{y^{*}_t} (x^{*})
@@ -640,7 +650,7 @@ where $l$ is the prior length$-$scale, p is the probability of a neuron not bein
 
 
 A few results are predicted using the ANN confidence. It is expected that high signal$-$to$-$background measurements and isotope mixtures of a few components will have a high model confidence. It is expected that low signal$-$to$-$background measurements and mixtures of many components will have a low model confidence. Additionally, the model confidence with an isotope not included in the training set should be very low. This confidence measure may be used to reduce the false alarm rate when performing isotope identification. 
-
+ \fi
 % \section{New Training Stopping Condition}
 
 %%% Might still use this in the analysis. Might check that it changes anything for a few cases. Adds another degree of freedom in what I'm analyzing. Exponentiates number of things I need to test, without clear reason for benefit. 
@@ -651,7 +661,14 @@ A few results are predicted using the ANN confidence. It is expected that high s
 
 \chapter{Conclusion}
 
-Previous work has shown that ANNs are capable of solving problems in gamma$-$ray spectroscopy. Investigating more advanced ANN models and proposed datasets may improve on previously reported performance.
+Because of their flexibility and their ability to train using simulated data, ANNs are well suited to solving different problems in gamma$-$ray spectroscopy. Because ANNs incorporate fuzzy logic, they mimic the intuition a trained spectroscopist uses when identifying spectra. This is in contrast to other identification algorithms that use rigid rules which may struggle to identify spectra that are poorly calibrated, have insufficient counts to form obvious features, or are in an unknown background. 
+
+To better understand what scenarios the ANN can operate in, two datasets will be investigated. The goal of the first dataset is to perform source interdiction using the ANSI N42$-$34$-$2006 library. The second dataset corresponds to performing uranium enrichment calculations for treaty verification purposes. %The final dataset will correspond to a source mixture problem using the ANSI N42$-$34$-$2006 library. This will be used as a surrogate for post$-$detonation nuclear forensics debris analysis. 
+
+In addition to these datasets, a number of ANN experiments are suggested to improve on past work. The first improvement is adding additional detector models to the training set. The additional models should increase the generalization performance of the ANN. The second improvement will focus on how autoencoders can improve performance by keeping the calibration correction and background subtraction step separate from an ANN used for identification. This will include investigating the use of a 1$-$D convolution ANN as an autoencoder. To more accurately display the performance of a given ANN structure, k$-$folds cross validation will be added to the hyperparameter search for each dataset. After training, bagging  \iffalse and  model  confidence \fi will be added to the model. Bagging lowers the variance on the outputs of a given ANN structure and more accurately displays its performance.
+
+ % Model confidence will be added using the dropout uncertainty method.
+
 
 
 
