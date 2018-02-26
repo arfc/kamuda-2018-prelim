@@ -121,7 +121,7 @@
     }
 \newcommand\phdthesis{\otherdoctorate{Doctor of Philosophy}{Ph.D.}
     }
-\newcommand\msthesis{\othermasters{Master of Science}{M.S.}
+\newcommand\msthesis{\othermasters{Doctor of Philosophy}{Ph.D.}
     }
 \def\degreeyear#1{\def\@degreeyear{#1}}
 \def\department#1{\def\@dept{#1}}
